@@ -1,5 +1,3 @@
-export const BASE_URL = "http://52.230.15.74:4000";
+export const BASE_URL = "http://172.16.190.100:3333/api";
 
-export const STORE_LIST_ENDPOINT = () => {
-    return `${BASE_URL}/api/store`;
-};
+export const STORE_LIST_ENDPOINT = `${BASE_URL}/store`;
