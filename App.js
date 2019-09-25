@@ -8,6 +8,7 @@ import Page1 from './Screens/Page1';
 import Page2 from './Screens/Page2';
 import Page3 from './Screens/Page3';
 import Page4 from './Screens/Page4';
+import Login from './Screens/Login';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -27,62 +28,84 @@ const instructions = Platform.select({
 //   }
 // }
 
-const TabNavigator = createBottomTabNavigator({
-  Page1:{
-    screen: Page1,
-    navigationOptions: {
-      tabBarLabel: 'Page 1',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/one.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Page2:{
-    screen:Page2,
-    navigationOptions: {
-      tabBarLabel: 'Page 2',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/two.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Page3:{
-    screen:Page3,
-    navigationOptions: {
-      tabBarLabel: 'Page 3',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/three.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Page4:{
-    screen:Page4,
-    navigationOptions: {
-      tabBarLabel: 'Page 4',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/four.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  }
-  
-}, {
-  tabBarOptions: {  
-    activeTintColor: 'red',
-    inactiveTintColor: 'grey',
-    style: {
-      height: 55,
-      backgroundColor: 'white',
-      borderTopWidth: 1,
-      shadowOffset: { width: 5, height: 3 },
-      shadowColor: 'black',
-      shadowOpacity: 0.5,
-      elevation: 5,
-    },
-    
-  }
-})
+const TabNavigator = createBottomTabNavigator(
+   {
+      Page1: {
+         screen: Page1,
+         navigationOptions: {
+            tabBarLabel: "Page 1",
+            tabBarIcon: ({ tintColor }) => (
+               <Image
+                  source={require("./assets/one.png")}
+                  style={{ height: 24, width: 24, tintColor: tintColor }}
+               />
+            )
+         }
+      },
+      Page2: {
+         screen: Page2,
+         navigationOptions: {
+            tabBarLabel: "Page 2",
+            tabBarIcon: ({ tintColor }) => (
+               <Image
+                  source={require("./assets/two.png")}
+                  style={{ height: 24, width: 24, tintColor: tintColor }}
+               />
+            )
+         }
+      },
+      Page3: {
+         screen: Page3,
+         navigationOptions: {
+            tabBarLabel: "Page 3",
+            tabBarIcon: ({ tintColor }) => (
+               <Image
+                  source={require("./assets/three.png")}
+                  style={{ height: 24, width: 24, tintColor: tintColor }}
+               />
+            )
+         }
+      },
+      Page4: {
+         screen: Page4,
+         navigationOptions: {
+            tabBarLabel: "Page 4",
+            tabBarIcon: ({ tintColor }) => (
+               <Image
+                  source={require("./assets/four.png")}
+                  style={{ height: 24, width: 24, tintColor: tintColor }}
+               />
+            )
+         }
+      }
+   },
+   {
+      tabBarOptions: {
+         activeTintColor: "red",
+         inactiveTintColor: "grey",
+         style: {
+            height: 55,
+            backgroundColor: "white",
+            borderTopWidth: 1,
+            shadowOffset: { width: 5, height: 3 },
+            shadowColor: "black",
+            shadowOpacity: 0.5,
+            elevation: 5
+         }
+      }
+   }
+);
 
-export default createAppContainer(TabNavigator);
+// export default createAppContainer(TabNavigator);
+export default class App extends Component {
+  render(){
+    return (
+        <View style={{ flex: 1 }}>
+            <Login />
+        </View>
+    );
+  }
+}
 
 // const styles = StyleSheet.create({
 //   container: {
