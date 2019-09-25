@@ -28,20 +28,19 @@ class Page1 extends Component {
     }
 
     render() {
-
         return (
             <View style={styles.container}>
                 <Image source={{ uri: 'http://icons.iconarchive.com/icons/icons8/windows-8/512/Numbers-1-Black-icon.png' }}
                     style={{ width: 300, height: 300 }} />
                 <Text style={styles.titleText}>Page 1111</Text>
-                {this.state.stores.map(store => {
+                {/* {this.state.stores.map(store => {
                     return (
                         <>
                             <Text key={store.id}>Name:{store.name}</Text>
                         </>
                     )
                 })}
-                <Text>Total store: {this.state.stores.length}</Text>
+                <Text>Total store: {this.state.stores.length}</Text> */}
             </View>
         );
     }
