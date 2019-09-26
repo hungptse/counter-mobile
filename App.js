@@ -10,6 +10,9 @@ import Page3 from './Screens/Page3';
 import Page4 from './Screens/Page4';
 import Login from './Screens/Login';
 
+import * as Font from 'expo-font';
+StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -17,15 +20,8 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-// type Props = {};
-// class App extends Component<Props> {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-      
-//       </View>
-//     );
-//   }
+// class App extends Component{
+  
 // }
 
 const TabNavigator = createBottomTabNavigator(

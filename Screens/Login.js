@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar, Button } from "react-native";
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
 // import { TextInput } from "@shoutem/ui";
 
 class Login extends Component {
@@ -18,15 +18,16 @@ class Login extends Component {
                <Text style={styles.slogan}>Hey, keep trying!!</Text>
                <TextInput
                   style={styles.input}
-                  placeholder={"username"}
+                  placeholder="username"
                   returnKeyType="next"
-                  onSubmitEditing={input => input && this.passwordInput.focus()}
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  blurOnSubmit={false}
                />
                <TextInput
                   style={styles.input}
-                  placeholder={"password"}
+                  placeholder="password"
                   secureTextEntry
-                  ref={input => (this.passwordInput = input)}
+                  ref={(input) => {this.passwordInput = input}}
                />
                <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7}>
                   <Text style={styles.buttonText}>Log In</Text>
