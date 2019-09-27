@@ -3,18 +3,14 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
-    TextInput,
-    Platform,
-    StatusBar,
     Image
 } from "react-native";
-import { GET } from "../api/caller";
-import { STORE_LIST_ENDPOINT } from "../api/endpoint";
+import { GET } from "../../api/caller";
+import { STORE_LIST_ENDPOINT } from "../../api/endpoint";
 
 //import Icon from 'react-native-vector-icons/Ionicons'
 
-class Page1 extends Component {
+class Profile extends Component {
     state = { stores: [] }
     async componentDidMount() {
         await GET(STORE_LIST_ENDPOINT, {}, {
@@ -40,14 +36,13 @@ class Page1 extends Component {
                         </> 
                     )
                 })}
-                <Text>Total store: {this.state.stores.length}</Text> */}
+                <Text>Total store: {this.state.stores.length}</Text>
             </View>
-<View></View>
         );
     }
 }
 
-export default Page1;
+export default Profile;
 
 const styles = StyleSheet.create({
     container: {
