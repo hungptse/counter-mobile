@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
-// import { TextInput } from "@shoutem/ui";
 
 class Login extends Component {
   	render() {
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
    buttonCointainer: {
       alignSelf: 'stretch',
       paddingVertical: 12,
-      backgroundColor: '#3DDB84',
+      backgroundColor: '#53509e',
       borderRadius: 5
    },
    buttonText: {

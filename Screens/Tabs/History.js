@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {View, Text, StyleSheet, Image} from 'react-native';
 
-class Page3 extends Component{
+class History extends Component{
 
    render(){
       return (
@@ -15,12 +15,13 @@ class Page3 extends Component{
             />
 
             <Text style={styles.titleText}>Page 3</Text>
+
          </View>
       );
    }
 }
 
-export default Page3;
+export default History;
 
 const styles = StyleSheet.create({
    container: {

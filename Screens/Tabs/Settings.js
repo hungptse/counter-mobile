@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {View, Text, StyleSheet, Image} from 'react-native';
 
-class Page4 extends Component{
+class Settings extends Component{
 
     render(){
         return(
@@ -14,7 +14,7 @@ class Page4 extends Component{
     }
 }
 
-export default Page4;
+export default Settings;
 
 const styles = StyleSheet.create({
     container:{
