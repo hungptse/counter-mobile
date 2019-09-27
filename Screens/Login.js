@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvo
 
 class Login extends Component {
   	render() {
+      const {navigate} = this.props.navigation;
     	return (
          <KeyboardAvoidingView
             style={styles.cointainer}
@@ -28,7 +29,7 @@ class Login extends Component {
                   secureTextEntry
                   ref={(input) => {this.passwordInput = input}}
                />
-               <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7}>
+               <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7} onPress={() => navigate('Dashboard')} >
                   <Text style={styles.buttonText}>Log In</Text>
                </TouchableOpacity>
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
