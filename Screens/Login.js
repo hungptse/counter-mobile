@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
+import { createStackNavigator } from "react-navigation-stack";
 
 class Login extends Component {
   	render() {
@@ -29,7 +30,7 @@ class Login extends Component {
                   ref={(input) => {this.passwordInput = input}}
                />
                <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7}>
-                  <Text style={styles.buttonText}>Log In</Text>
+                  <Text style={styles.buttonText} onPress={() => this.props.navigation.navigate('Profile')}>Log In</Text>
                </TouchableOpacity>
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
                   Forgot your login details?{" "}

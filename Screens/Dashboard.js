@@ -58,6 +58,8 @@ const TabNavigator = createMaterialBottomTabNavigator(
       }
    }
 );
+export default createAppContainer(TabNavigator);
+
 // import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 // const TabNavigator = createBottomTabNavigator(
@@ -120,4 +122,4 @@ const TabNavigator = createMaterialBottomTabNavigator(
 //    }
 // );
 
-export default createAppContainer(TabNavigator);
+// export default createAppContainer(TabNavigator);
