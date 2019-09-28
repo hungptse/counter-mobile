@@ -11,15 +11,6 @@ import { Icon } from '@shoutem/ui';
 
 const TabNavigator = createMaterialBottomTabNavigator(
    {
-      Profile: {
-         screen: Profile,
-         navigationOptions: {
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ tintColor }) => (
-               <Icon name="user-profile" style={{ color: tintColor }} />
-            )
-         }
-      },
       Stores: {
          screen: Stores,
          navigationOptions: {
@@ -38,6 +29,15 @@ const TabNavigator = createMaterialBottomTabNavigator(
             )
          }
       },
+      Profile: {
+         screen: Profile,
+         navigationOptions: {
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ tintColor }) => (
+               <Icon name="user-profile" style={{ color: tintColor }} />
+            )
+         }
+      },
       Settings: {
          screen: Settings,
          navigationOptions: {
@@ -49,7 +49,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
       }
    },
    {
-      initialRouteName: "Profile",
+      initialRouteName: "Stores",
       activeColor: "red",
       shifting: true,
       

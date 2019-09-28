@@ -43,10 +43,8 @@ class History extends Component{
             }
           ],
           filters: [
-            { name: 'Ho Chi Minh', value: 'Ho Chi Minh' },
-            { name: 'Can Tho', value: 'Can Tho' },
-            { name: 'Da Nang', value: 'Da Nang' },
-            { name: 'Vung Tau', value: 'Vung Tau' },
+            { name: 'Electricity', value: 'Electricity' },
+            { name: 'Water', value: 'Water' },
           ],
         }
       }

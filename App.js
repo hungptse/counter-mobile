@@ -18,7 +18,12 @@ const instructions = Platform.select({
 
 const Container = createStackNavigator(
    {
-      Login: { screen: Login },
+      Login: {
+         screen: Login,
+         navigationOptions: {
+            header: null,
+         }
+      },
       Dashboard: {
          screen: Dashboard,
          navigationOptions: {
