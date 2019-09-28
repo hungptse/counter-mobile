@@ -3,18 +3,14 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
-    TextInput,
-    Platform,
-    StatusBar,
     Image
 } from "react-native";
-import { GET } from "../api/caller";
-import { STORE_LIST_ENDPOINT } from "../api/endpoint";
+import { GET } from "../../api/caller";
+import { STORE_LIST_ENDPOINT } from "../../api/endpoint";
 
 //import Icon from 'react-native-vector-icons/Ionicons'
 
-class Page1 extends Component {
+class Profile extends Component {
     state = { stores: [] }
     async componentDidMount() {
         await GET(STORE_LIST_ENDPOINT, {}, {
@@ -33,20 +29,20 @@ class Page1 extends Component {
                 <Image source={{ uri: 'http://icons.iconarchive.com/icons/icons8/windows-8/512/Numbers-1-Black-icon.png' }}
                     style={{ width: 300, height: 300 }} />
                 <Text style={styles.titleText}>Page 1</Text>
-                {/* {this.state.stores.map(store => {
+                {this.state.stores.map(store => {
                     return (
                         <>
                             <Text key={store.id}>Name:{store.name}</Text>
-                        </>
+                        </> 
                     )
                 })}
-                <Text>Total store: {this.state.stores.length}</Text> */}
+                <Text>Total store: {this.state.stores.length}</Text>
             </View>
         );
     }
 }
 
-export default Page1;
+export default Profile;
 
 const styles = StyleSheet.create({
     container: {
