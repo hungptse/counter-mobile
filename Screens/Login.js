@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
-import { createStackNavigator } from "react-navigation-stack";
 
 class Login extends Component {
   	render() {
+      const {navigate} = this.props.navigation;
     	return (
          <KeyboardAvoidingView
             style={styles.cointainer}
@@ -29,8 +29,8 @@ class Login extends Component {
                   secureTextEntry
                   ref={(input) => {this.passwordInput = input}}
                />
-               <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7}>
-                  <Text style={styles.buttonText} onPress={() => this.props.navigation.navigate('Profile')}>Log In</Text>
+               <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7} onPress={() => navigate('Dashboard')} >
+                  <Text style={styles.buttonText}>Log In</Text>
                </TouchableOpacity>
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
                   Forgot your login details?{" "}
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
    buttonCointainer: {
       alignSelf: 'stretch',
       paddingVertical: 12,
-      backgroundColor: '#53509e',
+      backgroundColor: '#8f6ad0',
       borderRadius: 5
    },
    buttonText: {

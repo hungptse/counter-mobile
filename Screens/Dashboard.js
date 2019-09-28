@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 //import Icon from 'react-native-vector-icons/Ionicons';
 import Profile from './Tabs/Profile';
@@ -8,7 +9,6 @@ import History from './Tabs/History';
 import Settings from './Tabs/Settings';
 import { Icon } from '@shoutem/ui';
 
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 const TabNavigator = createMaterialBottomTabNavigator(
    {
       Profile: {

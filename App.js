@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Platform, View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
-
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Screens/Login';
 import Dashboard from "./Screens/Dashboard";
 
@@ -14,6 +15,23 @@ const instructions = Platform.select({
 
 // Disable Yellow box notification
 // console.disableYellowBox = true;
+
+const Container = createStackNavigator(
+   {
+      Login: { screen: Login },
+      Dashboard: {
+         screen: Dashboard,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      }
+   },
+   {
+      initialRouteName: "Login"
+   }
+);
+const AppContainer = createAppContainer(Container);
 
 export default class App extends Component {
 
@@ -37,16 +55,18 @@ export default class App extends Component {
       'rubicon-icon-font': require('./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf'),
     });
 
-    this.setState({fontsAreLoaded: true});
+    this.setState({ fontsAreLoaded: true });
   }
-  render(){
+  render() {
     if (!this.state.fontsAreLoaded) {
       return <ActivityIndicator />;
     }
     return (
-        <View style={{ flex: 1 }}>
-            <Dashboard />
-        </View>
+      <AppContainer
+        ref={nav => {
+          this.navigator = nav;
+        }}
+      />
     );
   }
 }
