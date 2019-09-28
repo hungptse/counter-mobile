@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
+import GradientButton from 'react-native-gradient-buttons';
 
 class Login extends Component {
   	render() {
+      const {navigate} = this.props.navigation;
     	return (
          <KeyboardAvoidingView
             style={styles.cointainer}
@@ -12,7 +14,7 @@ class Login extends Component {
             <View style={styles.loginCointainer}>
                <Image
                   source={require("../assets/HKT_logo.png")}
-                  style={{ height: 70, resizeMode: "contain" }}
+                  style={{ height: 200, resizeMode: "contain" }}
                />
                <Text style={styles.slogan}>Hey, keep trying!!</Text>
                <TextInput
@@ -26,11 +28,22 @@ class Login extends Component {
                   style={styles.input}
                   placeholder="password"
                   secureTextEntry
-                  ref={(input) => {this.passwordInput = input}}
+                  ref={input => {
+                     this.passwordInput = input;
+                  }}
                />
-               <TouchableOpacity style={styles.buttonCointainer} activeOpacity={.7}>
-                  <Text style={styles.buttonText}>Log In</Text>
-               </TouchableOpacity>
+               <GradientButton
+                  text="Login Now"
+                  width="100%"
+                  style={{ marginVertical: 2, opacity: 0.9 }}
+                  pinkDarkGreen
+                  impact
+                  height={50}
+                  radius={10}
+                  textStyle={{ fontSize: 14 }}
+                  onPressAction = {() => navigate('Dashboard')}
+               />
+
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
                   Forgot your login details?{" "}
                   <Text style={{ fontWeight: "bold" }}>
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
       padding: 27
    },
    slogan: {
-      marginBottom: 50
+      marginBottom: 30
    },
    input: {
       alignSelf: 'stretch',
@@ -69,16 +82,5 @@ const styles = StyleSheet.create({
       height: 47,
       paddingHorizontal: 10,
       borderRadius: 5
-   },
-   buttonCointainer: {
-      alignSelf: 'stretch',
-      paddingVertical: 12,
-      backgroundColor: '#53509e',
-      borderRadius: 5
-   },
-   buttonText: {
-      textAlign: 'center',
-      color: '#FFF',
-      fontWeight: '700'
    }
 });

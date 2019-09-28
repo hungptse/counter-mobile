@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 //import Icon from 'react-native-vector-icons/Ionicons';
 import Profile from './Tabs/Profile';
@@ -8,18 +9,8 @@ import History from './Tabs/History';
 import Settings from './Tabs/Settings';
 import { Icon } from '@shoutem/ui';
 
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 const TabNavigator = createMaterialBottomTabNavigator(
    {
-      Profile: {
-         screen: Profile,
-         navigationOptions: {
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ tintColor }) => (
-               <Icon name="user-profile" style={{ color: tintColor }} />
-            )
-         }
-      },
       Stores: {
          screen: Stores,
          navigationOptions: {
@@ -38,6 +29,15 @@ const TabNavigator = createMaterialBottomTabNavigator(
             )
          }
       },
+      Profile: {
+         screen: Profile,
+         navigationOptions: {
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ tintColor }) => (
+               <Icon name="user-profile" style={{ color: tintColor }} />
+            )
+         }
+      },
       Settings: {
          screen: Settings,
          navigationOptions: {
@@ -49,7 +49,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
       }
    },
    {
-      initialRouteName: "Profile",
+      initialRouteName: "Stores",
       activeColor: "red",
       shifting: true,
       
@@ -58,6 +58,8 @@ const TabNavigator = createMaterialBottomTabNavigator(
       }
    }
 );
+export default createAppContainer(TabNavigator);
+
 // import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 // const TabNavigator = createBottomTabNavigator(
@@ -120,4 +122,4 @@ const TabNavigator = createMaterialBottomTabNavigator(
 //    }
 // );
 
-export default createAppContainer(TabNavigator);
+// export default createAppContainer(TabNavigator);

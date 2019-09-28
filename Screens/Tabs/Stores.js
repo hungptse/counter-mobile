@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StatusBar, StyleSheet } from 'react-native';
-import { NavigationBar, ListView, ImageBackground, Tile, Title, Subtitle, Caption, Divider, DropDownMenu, Row, Image } from "@shoutem/ui";
+import { NavigationBar, ListView, ImageBackground, Tile, Title, Subtitle, Divider, DropDownMenu } from "@shoutem/ui";
 
 class Stores extends Component{
     
@@ -57,7 +57,7 @@ class Stores extends Component{
         }
       
         return (
-          <View style={{paddingBottom: 10}}>
+          <View>
             <ImageBackground
               styleName="large-banner"
               source={{ uri: restaurant.image.url }}
@@ -67,7 +67,7 @@ class Stores extends Component{
                 <Subtitle styleName="sm-gutter-horizontal bold" style={{fontSize: 15}}>{restaurant.address}</Subtitle>
               </Tile>
             </ImageBackground>
-            <Divider styleName="line" />
+            <View style={{ height: 15 }}><Divider /></View>
           </View>
          //  <Row>
          // <Image
