@@ -16,20 +16,23 @@ const instructions = Platform.select({
 // Disable Yellow box notification
 // console.disableYellowBox = true;
 
-const Container = createStackNavigator({
-  Login: { screen: Login },
-  Dashboard: { screen: Dashboard, navigationOptions : {
-    header : null,
-    gesturesEnabled: false
-  } },
-},
-  {
-    initialRouteName: 'Login',
-  });
+const Container = createStackNavigator(
+   {
+      Login: { screen: Login },
+      Dashboard: {
+         screen: Dashboard,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      }
+   },
+   {
+      initialRouteName: "Login"
+   }
+);
 const AppContainer = createAppContainer(Container);
 
-
-// );
 export default class App extends Component {
 
   // Loading font

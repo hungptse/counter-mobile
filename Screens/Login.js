@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
    buttonCointainer: {
       alignSelf: 'stretch',
       paddingVertical: 12,
-      backgroundColor: '#53509e',
+      backgroundColor: '#8f6ad0',
       borderRadius: 5
    },
    buttonText: {
