@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
+import { View, Text, Image, StyleSheet, TextInput, Platform, KeyboardAvoidingView, StatusBar } from "react-native";
 import GradientButton from 'react-native-gradient-buttons';
 
 class Login extends Component {
@@ -10,10 +10,15 @@ class Login extends Component {
             style={styles.cointainer}
             behavior="padding"
             enabled
-         >
+         ><StatusBar
+                  translucent
+                  barStyle={
+                     Platform.OS == "ios" ? "dark-content" : "light-content"
+                  }
+               />
             <View style={styles.loginCointainer}>
                <Image
-                  source={require("../assets/HKT_logo.png")}
+                  source={require("../assets/logo.png")}
                   style={{ height: 200, resizeMode: "contain" }}
                />
                <Text style={styles.slogan}>Hey, keep trying!!</Text>
@@ -43,7 +48,6 @@ class Login extends Component {
                   textStyle={{ fontSize: 14 }}
                   onPressAction = {() => navigate('Dashboard')}
                />
-
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
                   Forgot your login details?{" "}
                   <Text style={{ fontWeight: "bold" }}>
@@ -61,7 +65,7 @@ export default Login;
 const styles = StyleSheet.create({
    cointainer: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: 'white',
       paddingTop: StatusBar.currentHeight
    },
    loginCointainer: {

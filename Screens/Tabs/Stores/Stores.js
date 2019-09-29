@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet } from 'react-native';
+import { View, StatusBar, StyleSheet, Platform } from 'react-native';
 import { NavigationBar, ListView, ImageBackground, Tile, Title, Subtitle, Divider, DropDownMenu } from "@shoutem/ui";
 
 class Stores extends Component{
@@ -89,14 +89,18 @@ class Stores extends Component{
         return (
            <View style={styles.navigation}>
               {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
-              <NavigationBar style={{height:50}}
+                 <StatusBar
+                    translucent
+                    barStyle={Platform.OS == "ios" ? "dark-content" : "light-content"}
+                 />
+              <NavigationBar
                  styleName="inline"
                  leftComponent={
-                    <Title style={{paddingLeft: 20}}>
+                    <Title style={{ paddingLeft: 20 }}>
                        {/* {this.state.selectedFilter
                           ? this.state.selectedFilter.value
                           : this.state.filters[0].value} */}
-								  Stores list
+                       Records list
                     </Title>
                  }
                  rightComponent={
@@ -126,8 +130,8 @@ export default Stores;
 
 const styles = StyleSheet.create({
     navigation:{
-        paddingTop: StatusBar.currentHeight,
-        paddingBottom: 55,
+      paddingTop: StatusBar.currentHeight,
+      paddingBottom: 55,
     },
     titleText: {
         fontSize: 20,

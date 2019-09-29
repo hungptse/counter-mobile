@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Image, TouchableHighlight , StatusBar} from "react-native";
+import { Text, StyleSheet, View, Image, Platform , StatusBar} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Icon, ImageBackground } from '@shoutem/ui'
-import { FontAwesome } from '@shoutem/ui'
+import { Icon, ImageBackground, NavigationBar, Title, } from '@shoutem/ui'
 
 // import {Avatar} from "react-native-elements";
 // import { GET } from "../../api/caller";
@@ -31,8 +30,31 @@ class Profile extends Component {
                 {/* <View style={styles.wrapIcon}>
                     <Icon name={'address'} style={styles.icon} />
                 </View> */}
+                <StatusBar
+                  translucent
+                  barStyle={
+                     Platform.OS == "ios" ? "dark-content" : "light-content"
+                  }
+               />
+                <NavigationBar headerStyle={{
+    backgroundColor: 'red',
+
+                }}
+                 styleName="clear"
+                 leftComponent={
+                    <Title style={{paddingLeft: 20}}>
+                       {/* {this.state.selectedFilter
+                          ? this.state.selectedFilter.value
+                          : this.state.filters[0].value} */}
+								  Records list
+                    </Title>
+                 }
+                 rightComponent={
+                    <Text>h</Text>
+                 }
+              />
                 <View style={styles.header}>
-                    <ImageBackground source={require('../../assets/home-bg-OHP-LR-5.jpg')} 
+                    <ImageBackground source={require('../../../assets/home-bg-OHP-LR-5.jpg')} 
                     style={{width: '100%', height: '100%', flex: 1}}>
                         <View style={styles.editIcon}>
                             <Ionicons name={'ios-arrow-back'} size={35} color="black" />
@@ -44,7 +66,7 @@ class Profile extends Component {
                                 Bui Van Khanh
                     </Text>
                             <Image style={styles.avatar}
-                                source={require('../../assets/home-bg-OHP-LR-5.jpg')} />
+                                source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
                         </View>
                     </ImageBackground>
 
@@ -101,6 +123,7 @@ export default Profile;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: Platform.OS == "ios" ? 20 : StatusBar.currentHeight
         
     },
     body: {
