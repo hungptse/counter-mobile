@@ -5,6 +5,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Screens/Login';
 import Dashboard from "./Screens/Dashboard";
+import EditProfile from "./Screens/Tabs/EditProfile";
+import Profile from "./Screens/Tabs/Profile";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -30,7 +32,19 @@ const Container = createStackNavigator(
             header: null,
             gesturesEnabled: false
          }
+      },
+      EditProfile: {
+        screen: EditProfile,
+        navigationOptions: {
+           header: null,
+        }
+     },
+     Profile: {
+      screen: Profile,
+      navigationOptions: {
+         header: null,
       }
+   }
    },
    {
       initialRouteName: "Login"
