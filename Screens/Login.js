@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TextInput, Platform, KeyboardAvoidingView, StatusBar, Alert } from "react-native";
+import { View, Text, Image, StyleSheet, TextInput, Platform, KeyboardAvoidingView, StatusBar, AsyncStorage } from "react-native";
 import GradientButton from 'react-native-gradient-buttons';
 import { POST } from "../api/caller";
 import { LOGIN_ENDPOINT } from "../api/endpoint";
@@ -20,9 +20,10 @@ class Login extends Component {
          await POST(LOGIN_ENDPOINT, {}, {}, {
             username: username,
             password: password
-         }).then(res => {
+         }).then(async res => {
             // console.log(this.props.navigation.actions.navigate());
             if (res.status == 200) {
+               await AsyncStorage.setItem('jwt_token', res.data.token);
                NavigationService.navigate('Dashboard');
             }
             if (res.status != 200) {
