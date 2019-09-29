@@ -1,7 +1,18 @@
 import React, { Component } from "react";
-import { Icon, ImageBackground, NavigationBar, Title } from '@shoutem/ui'
-import { StyleSheet, Platform , StatusBar, View, Text, Image} from 'react-native'
-class Profile extends Component {
+import { Text, StyleSheet, View, Image, TouchableHighlight, StatusBar } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Icon, ImageBackground } from '@shoutem/ui'
+import { FontAwesome } from '@shoutem/ui'
+
+// import {Avatar} from "react-native-elements";
+// import { GET } from "../../api/caller";
+// import { STORE_LIST_ENDPOINT } from "../../api/endpoint";
+
+//import Icon from 'react-native-vector-icons/Ionicons'
+
+
+
+class EditProfile extends Component {
     // state = { stores: [] }
     // async componentDidMount() {
     //     await GET(STORE_LIST_ENDPOINT, {}, {
@@ -16,51 +27,31 @@ class Profile extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-
         return (
             <View style={styles.container}>
                 {/* <View style={styles.wrapIcon}>
                     <Icon name={'address'} style={styles.icon} />
                 </View> */}
-                <StatusBar
-                    translucent
-                    barStyle={
-                        Platform.OS == "ios" ? "dark-content" : "light-content"
-                    }
-                />
-                <NavigationBar headerStyle={{
-                    backgroundColor: 'red',
-
-                }}
-                    styleName="clear"
-                    leftComponent={
-                        <Title style={{ paddingLeft: 20 }}>
-                            {/* {this.state.selectedFilter
-                          ? this.state.selectedFilter.value
-                          : this.state.filters[0].value} */}
-                            Records list
-                    </Title>
-                    }
-                    rightComponent={
-                        <Text>h</Text>
-                    }
-                />
                 <View style={styles.header}>
                     <ImageBackground source={require('../../../assets/fabian-albert-3e3MRBYVE7A-unsplash.jpg')}
-                        style={{
-                            width: '100%', height: '100%', flex: 1, flexDirection: 'column',
-                            justifyContent: 'center'
-                        }} />
+                        style={{ width: '100%', height: '100%', flex: 1, flexDirection: 'column', }}>
+                        <View style={styles.editIcon}>
+                            <Ionicons name={'ios-arrow-back'} size={30}
+                                style={styles.iconBack}
+                                onPress={() => navigate('Profile')} />
 
-                    <View style={styles.profile}>
-                        <Text style={styles.name} onPress={() => navigate('EditProfile')}>
-                            Nguyen Le Thai Hoa
-                                {/* <Icon name={'edit'}   style={{ color:'#00365d', marginLeft:10}} /> */}
+                            {/* <Icon name={'edit'} color='#FFF' onPress={() => navigate('Profile')} style={{ color: '#FFF' }} /> */}
+                        </View>
+                        <View style={styles.profile}>
+                            <Text style={styles.name}>
+                                Nguyen Le Quynh Thai Hoa Hue
 
-                        </Text>
-                        <Image style={styles.avatar}
-                            source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
-                    </View>
+                    </Text>
+                            <Image style={styles.avatar}
+                                source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
+                        </View>
+                    </ImageBackground>
+
 
 
 
@@ -104,17 +95,23 @@ class Profile extends Component {
                     </View>
                 </View>
 
-            </View >
+            </View>
         );
     }
 }
 
-export default Profile;
+export default EditProfile;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Platform.OS == "ios" ? 20 : StatusBar.currentHeight
+
+    },
+    iconBack: {
+        marginRight: 280,
+        marginTop: 20,
+        justifyContent: 'space-between',
+        color: '#FFF'
     },
     body: {
         flex: 2,
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
         borderRadius: 55,
         borderColor: '#FFF',
         borderWidth: 4,
-        // marginBottom: 20,
+        marginBottom: 20,
         marginRight: 8
 
 
@@ -156,22 +153,16 @@ const styles = StyleSheet.create({
     },
     editIcon: {
         flex: 1,
-        // flexDirection: 'row',
-        // justifyContent:'flex-start'
-
-        marginBottom: 27,
-        marginLeft: 10
-        // aliContent: 'flex-start'
-
+        flexDirection: 'row',
         // justifyContent: 'space-between',
-        // marginTop: 35,
+        marginTop: 20,
+        marginRight: 30
 
     },
     profile: {
         flex: 2,
         flexDirection: 'row',
-        marginTop: 80
-        // paddingBottom: 40,
+        paddingBottom: 40,
         // alignItems: 'flex-start'
     },
     myProfile: {
@@ -212,9 +203,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.58,
         shadowRadius: 16.00,
         elevation: 24
-    }, navigation: {
-        paddingTop: StatusBar.currentHeight,
-
-    },
+    }
 
 });

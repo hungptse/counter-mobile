@@ -5,7 +5,9 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import Login from "./Screens/Login";
 import Dashboard from "./Screens/Dashboard";
-
+import EditProfile from "./Screens/Tabs/Profile/EditProfile";
+import Profile from "./Screens/Tabs/Profile/Profile";
+import NavigationService from './services/navigate';
 // Stores
 
 // History
@@ -31,24 +33,37 @@ const Container = createStackNavigator(
       Login: {
          screen: Login,
          navigationOptions: {
-          header: null,
-          gesturesEnabled: false
-        }
+            header: null,
+            gesturesEnabled: false
+         }
       },
       Dashboard: {
          screen: Dashboard,
          navigationOptions: {
-          header: null,
-          gesturesEnabled: false
-        }
+            header: null,
+            gesturesEnabled: false
+         }
       },
       ChangePassword: {
-        screen: ChangePassword,
-        navigationOptions: {
-          header: null,
-          gesturesEnabled: false
-        }
-     }
+         screen: ChangePassword,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      }
+      ,
+      EditProfile: {
+         screen: EditProfile,
+         navigationOptions: {
+            header: null,
+         }
+      },
+      Profile: {
+         screen: Profile,
+         navigationOptions: {
+            header: null,
+         }
+      }
    },
    {
       initialRouteName: "Login",
@@ -86,15 +101,18 @@ export default class App extends Component {
       return (
          <>
             <StatusBar
-                  translucent
-                  barStyle={
-                     Platform.OS == "ios" ? "dark-content" : "light-content"
-                  }
-               />
+               translucent
+               barStyle={
+                  Platform.OS == "ios" ? "dark-content" : "light-content"
+               }
+            />
             <AppContainer
-               ref={nav => {
-                  this.navigator = nav;
-               }}
+            ref={navigatorRef => {
+               NavigationService.setTopLevelNavigator(navigatorRef);
+             }}
+               // ref={nav => {
+               //    this.navigator = nav;
+               // }}
             />
          </>
       );
