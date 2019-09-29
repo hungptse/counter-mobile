@@ -12,6 +12,7 @@ import {
    ImageBackground,
    TouchableOpacity
 } from "@shoutem/ui";
+import NavigationService from '../../../services/navigate';
 
 class Settings extends Component {
    constructor(props) {
@@ -74,7 +75,7 @@ class Settings extends Component {
                <Divider style={{ paddingTop: 15 }}>
                   <Caption style={{ paddingLeft: 10 }}>SETTINGS</Caption>
                </Divider>
-               <TouchableOpacity onPress={() => navigate("ChangePassword")}>
+               <TouchableOpacity onPress={() => NavigationService.navigate("ChangePassword")}>
                   <Row styleName="small">
                      <Icon name="lock" style={{ color: "#00365d" }} />
                      <Text style={{ color: "#00365d" }}>Change password</Text>
@@ -90,7 +91,7 @@ class Settings extends Component {
                <View style={{ height: 15 }}>
                   <Divider />
                </View>
-               <TouchableOpacity onPress={() => navigate("Login")}>
+               <TouchableOpacity onPress={() => NavigationService.navigate("Login")}>
                   <Row styleName="small">
                      <Icon name="exit-to-app" style={{ color: "red" }} />
                      <Text style={{ color: "red" }}>Log Out</Text>

@@ -1,29 +1,55 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet, ScrollView, Platform, KeyboardAvoidingView } from "react-native";
+import { View, StatusBar, StyleSheet, ScrollView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
 import {
    Caption,
-   Title,
    Icon,
    Divider,
    Row,
-   Text,
-   Tile,
-   ImageBackground,
-   TouchableOpacity,
-   TextInput
 } from "@shoutem/ui";
 import GradientButton from 'react-native-gradient-buttons';
+
+import { PUT } from "../../../api/caller";
+import { CHANGE_PASSWORD_ENDPOINT } from "../../../api/endpoint";
+import DropdownAlert from 'react-native-dropdownalert';
+import NavigationService from '../../../services/navigate';
 
 class Settings extends Component {
    constructor(props) {
       super(props);
-      
    }
+
+   state = { old_password: '', new_password: '', retype_password: '' }
+
+   handleChangePassword = async () => {
+      const { old_password, new_password, retype_password } = this.state
+      if (old_password === '' || new_password === '' || retype_password === '') {
+         return;
+      } else if (new_password != retype_password) {
+         return;
+      } else {
+         await PUT(CHANGE_PASSWORD_ENDPOINT, {}, {},{
+            old_password: old_password,
+            new_password: new_password,
+            retype_password: retype_password
+         }).then(async res => {
+            if (res.status == 200) {
+               await this.dropDownAlertRef.alertWithType('success', 'HKT Message', res.message);
+               NavigationService.navigate('Dashboard');
+            }
+            if (res.status != 200) {
+               this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
+            }
+         })
+      }
+   }
+
    render() {
       const {navigate} = this.props.navigation;
       return (
-         <KeyboardAvoidingView behavior="height"
+         <KeyboardAvoidingView behavior="height" style={styles.navigation}
          enabled>
+         <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+
             {/* <View style={styles.navigation}>
                <StatusBar
                   translucent
@@ -68,7 +94,10 @@ class Settings extends Component {
                   >
                      <TextInput secureTextEntry
                         placeholder={"Current password"}
-                        maxLength={10}
+                        onChangeText={(content) => this.setState({ old_password: content })}
+                        returnKeyType="next"
+                        onSubmitEditing={() => this.newPasswordInput.focus()}
+                        blurOnSubmit={false}
                         style={{ borderBottomWidth: 1 }}
                      />
                   </View>
@@ -81,7 +110,13 @@ class Settings extends Component {
                   >
                      <TextInput secureTextEntry
                         placeholder={"New password"}
-                        maxLength={10}
+                        onChangeText={(content) => this.setState({ new_password: content })}
+                        ref={input => {
+                           this.newPasswordInput = input;
+                        }}
+                        returnKeyType="next"
+                        onSubmitEditing={() => this.retypePasswordInput.focus()}
+                        blurOnSubmit={false}
                         style={{ borderBottomWidth: 1 }}
                      />
                   </View>
@@ -94,7 +129,10 @@ class Settings extends Component {
                   >
                      <TextInput secureTextEntry
                         placeholder={"Retype new password"}
-                        maxLength={10}
+                        onChangeText={(content) => this.setState({ retype_password: content })}
+                        ref={input => {
+                           this.retypePasswordInput = input;
+                        }}
                         style={{ borderBottomWidth: 1 }}
                      />
                   </View>
@@ -110,7 +148,7 @@ class Settings extends Component {
                      height={50}
                      radius={150}
                      textStyle={{ fontSize: 14 }}
-                     onPressAction={() => navigate("Dashboard")}
+                     onPressAction={this.handleChangePassword}
                   />
                   <View style={{ height: 30 }}>
                   <Divider />
@@ -123,7 +161,7 @@ class Settings extends Component {
                      height={50}
                      radius={150}
                      textStyle={{ fontSize: 14 }}
-                     onPressAction={() => navigate("Dashboard")}
+                     onPressAction={() => NavigationService.navigate("Dashboard")}
                   />
                </View>
             {/* </ScrollView> */}
@@ -136,7 +174,7 @@ export default Settings;
 
 const styles = StyleSheet.create({
    navigation: {
-      paddingTop: Platform.OS == "ios" ? 20 : StatusBar.currentHeight,
+      marginTop: Platform.OS == "ios" ? 20 : StatusBar.currentHeight,
    },
    titleText: {
       fontSize: 20,
