@@ -1,25 +1,62 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar } from "react-native";
+import { View, Text, Image, StyleSheet, TextInput, Platform, KeyboardAvoidingView, StatusBar, Alert } from "react-native";
 import GradientButton from 'react-native-gradient-buttons';
+import { POST } from "../api/caller";
+import { LOGIN_ENDPOINT } from "../api/endpoint";
+import DropdownAlert from 'react-native-dropdownalert';
+import NavigationService from '../services/navigate';
 
 class Login extends Component {
-  	render() {
-      const {navigate} = this.props.navigation;
-    	return (
+   constructor(props) {
+      super(props);
+   }
+   state = { username: '', password: '' }
+
+   handleLogin = async () => {
+      const { username, password } = this.state
+      if (username === '' || password === '') {
+         return;
+      } else {
+         await POST(LOGIN_ENDPOINT, {}, {}, {
+            username: username,
+            password: password
+         }).then(res => {
+            // console.log(this.props.navigation.actions.navigate());
+            if (res.status == 200) {
+               NavigationService.navigate('Dashboard');
+            }
+            if (res.status != 200) {
+               this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
+            }
+
+         })
+      }
+   };
+
+   render() {
+      const { navigate } = this.props.navigation;
+      return (
          <KeyboardAvoidingView
             style={styles.cointainer}
             behavior="padding"
             enabled
-         >
+         ><StatusBar
+               translucent
+               barStyle={
+                  Platform.OS == "ios" ? "dark-content" : "light-content"
+               }
+            />
             <View style={styles.loginCointainer}>
+               <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
                <Image
-                  source={require("../assets/HKT_logo.png")}
+                  source={require("../assets/logo.png")}
                   style={{ height: 200, resizeMode: "contain" }}
                />
                <Text style={styles.slogan}>Hey, keep trying!!</Text>
                <TextInput
                   style={styles.input}
                   placeholder="username"
+                  onChangeText={(content) => this.setState({ username: content })}
                   returnKeyType="next"
                   onSubmitEditing={() => this.passwordInput.focus()}
                   blurOnSubmit={false}
@@ -28,6 +65,7 @@ class Login extends Component {
                   style={styles.input}
                   placeholder="password"
                   secureTextEntry
+                  onChangeText={(content) => this.setState({ password: content })}
                   ref={input => {
                      this.passwordInput = input;
                   }}
@@ -41,9 +79,8 @@ class Login extends Component {
                   height={50}
                   radius={10}
                   textStyle={{ fontSize: 14 }}
-                  onPressAction = {() => navigate('Dashboard')}
+                  onPressAction={this.handleLogin}
                />
-
                <Text style={{ paddingTop: 10, fontSize: 13 }}>
                   Forgot your login details?{" "}
                   <Text style={{ fontWeight: "bold" }}>
@@ -53,7 +90,7 @@ class Login extends Component {
             </View>
          </KeyboardAvoidingView>
       );
-  	}
+   }
 }
 
 export default Login;
@@ -61,7 +98,7 @@ export default Login;
 const styles = StyleSheet.create({
    cointainer: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: 'white',
       paddingTop: StatusBar.currentHeight
    },
    loginCointainer: {

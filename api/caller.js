@@ -5,11 +5,13 @@ export const GET = (endpoint, params = {}, headers = {}) => {
     });
 };
 
-export const POST = (endpoint, params = {}, headers = {}) => {
+export const POST = (endpoint, params = {}, headers = {}, body = {}) => {
+    headers["Content-Type"] = "Application/json"
     return fetch(endpoint, {
         method : 'POST',
         headers : headers,
-    });
+        body : JSON.stringify(body)
+    }).then(res => res.json());
 };
 
 export const PUT = (endpoint, params = {}, headers = {}) => {

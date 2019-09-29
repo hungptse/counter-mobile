@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet } from 'react-native';
+import { View, StatusBar, StyleSheet, Platform } from 'react-native';
 import { NavigationBar, ListView, Caption, Title, Subtitle, Icon, Image, Divider, DropDownMenu, Row, Text, Button } from "@shoutem/ui";
 
 class History extends Component{
@@ -86,7 +86,12 @@ class History extends Component{
         return (
            <View style={styles.navigation}>
               {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
-              <NavigationBar style={{height:50}}
+              <StatusBar
+                    translucent
+                    backgroundColor="#000"
+                    barStyle={Platform.OS == "ios" ? "dark-content" : "light-content"}
+                 />
+              <NavigationBar
                  styleName="inline"
                  leftComponent={
                     <Title style={{paddingLeft: 20}}>
@@ -123,8 +128,8 @@ export default History;
 
 const styles = StyleSheet.create({
     navigation:{
-        paddingTop: StatusBar.currentHeight,
-        paddingBottom: 55,
+      paddingTop: StatusBar.currentHeight,
+      paddingBottom: 55,
     },
     titleText: {
         fontSize: 20,
