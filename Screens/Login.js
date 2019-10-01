@@ -23,7 +23,7 @@ class Login extends Component {
          }).then(async res => {
             if (res.status == 200) {
                await AsyncStorage.setItem('jwt_token', res.data.token)
-               this.input.clear();
+               this.passwordInput.clear();
                NavigationService.navigate('Dashboard');
             }
             if (res.status != 200) {
