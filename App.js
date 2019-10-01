@@ -8,7 +8,10 @@ import Dashboard from "./Screens/Dashboard";
 import EditProfile from "./Screens/Tabs/Profile/EditProfile";
 import Profile from "./Screens/Tabs/Profile/Profile";
 import NavigationService from './services/navigate';
-
+import registerForPushNotificationsAsync from './services/notification'
+import {
+   Notifications,
+} from 'expo';
 // Stores
 import StoreDetails from './Screens/Tabs/Stores/StoreDetails';
 
@@ -20,13 +23,6 @@ import HistoryDetails from './Screens/Tabs/History/HistoryDetails';
 
 // Settings
 import ChangePassword from "./Screens/Tabs/Settings/ChangePassword";
-
-const instructions = Platform.select({
-   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-   android:
-      "Double tap R on your keyboard to reload,\n" +
-      "Shake or press menu button for dev menu"
-});
 
 // Disable Yellow box notification
 // console.disableYellowBox = true;
@@ -94,7 +90,8 @@ const AppContainer = createAppContainer(Container);
 export default class App extends Component {
    // Loading font
    state = {
-      fontsAreLoaded: false
+      fontsAreLoaded: false,
+      notification: {}
    };
 
    async componentWillMount() {
@@ -111,10 +108,36 @@ export default class App extends Component {
          "Rubik-Regular": require("./node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf"),
          "rubicon-icon-font": require("./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf")
       });
-
+      registerForPushNotificationsAsync();
+      this._notificationSubscription = Notifications.addListener(this._handleNotification);
       this.setState({ fontsAreLoaded: true });
+      if (Platform.OS === 'android') {
+         Notifications.createChannelAndroidAsync('counter-android', {
+            name: 'Counter',
+            priority: 'max',
+            vibrate: [0, 250, 250, 250],
+            sound: true
+         });
+      }
    }
+   
+
+   // _createNotificationAsync = () => {
+   //    Notifications.presentLocalNotificationAsync({
+   //       title: 'New Message',
+   //       body: 'Message!!!!',
+   //       android: {
+   //          channelId: 'counter-android',
+   //       },
+   //    });
+   // }
+
+   _handleNotification = (notification) => {
+      this.setState({ notification: notification });
+   };
+
    render() {
+      const { notification } = this.state
       if (!this.state.fontsAreLoaded) {
          return (
             <View style={{ flex: 1 }}>
@@ -135,14 +158,15 @@ export default class App extends Component {
                }
             />
             <AppContainer
-            ref={navigatorRef => {
-               NavigationService.setTopLevelNavigator(navigatorRef);
-             }}
-               // ref={nav => {
-               //    this.navigator = nav;
-               // }}
+               ref={navigatorRef => {
+                  NavigationService.setTopLevelNavigator(navigatorRef);
+               }}
+            // ref={nav => {
+            //    this.navigator = nav;
+            // }}
             />
          </>
       );
    }
 }
+
