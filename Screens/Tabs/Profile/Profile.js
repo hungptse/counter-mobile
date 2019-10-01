@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Icon, ImageBackground, NavigationBar, Title } from '@shoutem/ui'
-import { StyleSheet, Platform, StatusBar, View, Text, Image } from 'react-native'
+import { StyleSheet, Platform , StatusBar, View, Text, Image} from 'react-native'
 class Profile extends Component {
     // state = { stores: [] }
     // async componentDidMount() {
@@ -16,14 +16,7 @@ class Profile extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        var profile = {
-            name: 'Nguyen Thai Hoa',
-            store: 'Kha Van Can',
-            phone: '0123456789',
-            email: 'hula@gmail.com',
-            address: 'Quan 9, Ho Chi Minh'
 
-        }
         return (
             <View style={styles.container}>
                 {/* <View style={styles.wrapIcon}>
@@ -35,43 +28,39 @@ class Profile extends Component {
                         Platform.OS == "ios" ? "dark-content" : "light-content"
                     }
                 />
-                {/* <NavigationBar headerStyle={{
+                <NavigationBar headerStyle={{
                     backgroundColor: 'red',
 
                 }}
                     styleName="clear"
                     leftComponent={
                         <Title style={{ paddingLeft: 20 }}>
-                            {this.state.selectedFilter
+                            {/* {this.state.selectedFilter
                           ? this.state.selectedFilter.value
-                          : this.state.filters[0].value}
+                          : this.state.filters[0].value} */}
                             Records list
                     </Title>
                     }
                     rightComponent={
                         <Text>h</Text>
                     }
-                /> */}
+                />
                 <View style={styles.header}>
                     <ImageBackground source={require('../../../assets/fabian-albert-3e3MRBYVE7A-unsplash.jpg')}
                         style={{
                             width: '100%', height: '100%', flex: 1, flexDirection: 'column',
                             justifyContent: 'center'
-                        }} >
+                        }} />
 
-                        <View style={styles.profile}>
-                            <Text style={styles.name} onPress={() => this.props.navigation.navigate('EditProfile',{
-                               profileInf: profile  
-                            })}>
-                                {profile.name}
+                    <View style={styles.profile}>
+                        <Text style={styles.name} onPress={() => navigate('EditProfile')}>
+                            Nguyen Le Thai Hoa
                                 {/* <Icon name={'edit'}   style={{ color:'#00365d', marginLeft:10}} /> */}
 
-                            </Text>
-                            <Image style={styles.avatar}
-                                source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
-
-                        </View>
-                    </ImageBackground>
+                        </Text>
+                        <Image style={styles.avatar}
+                            source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
+                    </View>
 
 
 
@@ -89,28 +78,28 @@ class Profile extends Component {
                         <Icon name={'address'} style={styles.icon} />
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile}>Address</Text>
-                            <Text>{profile.address}</Text>
+                            <Text>Quan 9, Ho Chi Minh</Text>
                         </View>
                     </View>
                     <View style={styles.myProfile}>
                         <Icon name={'call'} style={styles.icon} />
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile} >Phone</Text>
-                            <Text>{profile.phone}</Text>
+                            <Text>0123456789</Text>
                         </View>
                     </View>
                     <View style={styles.myProfile}>
                         <Icon name={'email'} style={styles.icon} />
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile}>Email</Text>
-                            <Text>{profile.email}</Text>
+                            <Text>khanhbv@yahoo.com</Text>
                         </View>
                     </View>
                     <View style={styles.myProfile}>
                         <Icon name={'home'} style={styles.icon} />
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile}>Store</Text>
-                            <Text>{profile.store}</Text>
+                            <Text>Kha Van Can</Text>
                         </View>
                     </View>
                 </View>

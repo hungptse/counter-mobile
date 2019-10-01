@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet, Platform } from 'react-native';
+import { View, StatusBar, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import { NavigationBar, ListView, ImageBackground, Tile, Title, Subtitle, Divider, DropDownMenu } from "@shoutem/ui";
+import NavigationService from '../../../services/navigate';
 
 class Stores extends Component{
     
@@ -57,7 +58,7 @@ class Stores extends Component{
         }
       
         return (
-          <View>
+          <TouchableOpacity onPress={() => NavigationService.navigate("StoreDetails")}>
             <ImageBackground
               styleName="large-banner"
               source={{ uri: restaurant.image.url }}
@@ -68,7 +69,7 @@ class Stores extends Component{
               </Tile>
             </ImageBackground>
             <View style={{ height: 15 }}><Divider /></View>
-          </View>
+          </TouchableOpacity>
          //  <Row>
          // <Image
          //    styleName="medium rounded-corners"
