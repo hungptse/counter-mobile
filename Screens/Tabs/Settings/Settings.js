@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet, ScrollView, Platform, Alert } from "react-native";
+import { View, StatusBar, StyleSheet, ScrollView, Platform } from "react-native";
 import {
    Caption,
    Title,
@@ -21,22 +21,6 @@ class Settings extends Component {
    }
    render() {
       const {navigate} = this.props.navigation;
-      const confirmLogOut = () => {
-         Alert.alert(
-            "Log out",
-            "You will be returned to the login screen.",
-            [
-               {
-                  text: "Cancel"
-               },
-               {
-                  text: "Log out",
-                  onPress: () => NavigationService.navigate("Login")
-               }
-            ],
-            { cancelable: true }
-         );
-      }
       return (
          <>
             <View style={styles.navigation}>
@@ -107,8 +91,7 @@ class Settings extends Component {
                <View style={{ height: 15 }}>
                   <Divider />
                </View>
-               {/* <TouchableOpacity onPress={() => NavigationService.navigate("Login")}> */}
-               <TouchableOpacity onPress={confirmLogOut}>
+               <TouchableOpacity onPress={() => NavigationService.navigate("Login")}>
                   <Row styleName="small">
                      <Icon name="exit-to-app" style={{ color: "red" }} />
                      <Text style={{ color: "red" }}>Log Out</Text>

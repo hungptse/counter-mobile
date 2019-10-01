@@ -21,6 +21,7 @@ class Login extends Component {
             username: username,
             password: password
          }).then(async res => {
+            // console.log(this.props.navigation.actions.navigate());
             if (res.status == 200) {
                await AsyncStorage.setItem('jwt_token', res.data.token)
                this.passwordInput.clear();
