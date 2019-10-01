@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, View, ActivityIndicator, StatusBar } from "react-native";
+import { Platform, ActivityIndicator, StatusBar, View } from "react-native";
 import * as Font from "expo-font";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -8,9 +8,12 @@ import Dashboard from "./Screens/Dashboard";
 import EditProfile from "./Screens/Tabs/Profile/EditProfile";
 import Profile from "./Screens/Tabs/Profile/Profile";
 import NavigationService from './services/navigate';
+
 // Stores
+import StoreDetails from './Screens/Tabs/Stores/StoreDetails';
 
 // History
+import HistoryDetails from './Screens/Tabs/History/HistoryDetails';
 
 // Profile
 
@@ -44,24 +47,41 @@ const Container = createStackNavigator(
             gesturesEnabled: false
          }
       },
-      ChangePassword: {
-         screen: ChangePassword,
+      // Stores
+      StoreDetails: {
+         screen: StoreDetails,
+         // navigationOptions: {
+         //    header: null,
+         //    gesturesEnabled: false
+         // }
+      },
+      // History
+      HistoryDetails: {
+         screen: HistoryDetails,
+         // navigationOptions: {
+         //    header: null,
+         //    gesturesEnabled: false
+         // }
+      },
+      // Profile
+      Profile: {
+         screen: Profile,
          navigationOptions: {
             header: null,
-            gesturesEnabled: false
          }
-      }
-      ,
+      },
       EditProfile: {
          screen: EditProfile,
          navigationOptions: {
             header: null,
          }
       },
-      Profile: {
-         screen: Profile,
+      // Settings
+      ChangePassword: {
+         screen: ChangePassword,
          navigationOptions: {
             header: null,
+            gesturesEnabled: false
          }
       }
    },
@@ -96,7 +116,15 @@ export default class App extends Component {
    }
    render() {
       if (!this.state.fontsAreLoaded) {
-         return <ActivityIndicator />;
+         return (
+            <View style={{ flex: 1 }}>
+               <ActivityIndicator
+                  size="large"
+                  color="#00ff00"
+                  style={{ flex: 1 }}
+               />
+            </View>
+         );
       }
       return (
          <>
