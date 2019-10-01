@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, StatusBar, StyleSheet, Platform } from 'react-native';
 import { NavigationBar, ListView, Caption, Title, Subtitle, Icon, Image, Divider, DropDownMenu, Row, Text, Button } from "@shoutem/ui";
-import NavigationService from '../../../services/navigate';
 
 class History extends Component{
     
@@ -68,7 +67,7 @@ class History extends Component{
            //    </ImageBackground>
            //    <Divider styleName="line" />
            //  </View>
-           <TouchableOpacity onPress={() => NavigationService.navigate('HistoryDetails')}>
+           <View>
               <View style={{ height: 15 }}><Divider /></View>
               <Row styleName="small" style={{ magrinBottom: 50 }}>
                  <Icon name="add-to-favorites-off" />
@@ -77,7 +76,7 @@ class History extends Component{
                     <Caption>Sep 29 · 03:00</Caption>
                  </View>
               </Row>
-           </TouchableOpacity>
+           </View>
         );
       }
       
