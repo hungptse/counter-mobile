@@ -23,7 +23,8 @@ class Login extends Component {
          }).then(async res => {
             // console.log(this.props.navigation.actions.navigate());
             if (res.status == 200) {
-               await AsyncStorage.setItem('jwt_token', res.data.token);
+               await AsyncStorage.setItem('jwt_token', res.data.token)
+               this.passwordInput.clear();
                NavigationService.navigate('Dashboard');
             }
             if (res.status != 200) {
