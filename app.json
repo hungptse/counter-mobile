@@ -28,6 +28,9 @@
     },
     "android": {
       "package": "hkt.fptu.counter"
+    },
+    "notification" : {
+      "iosDisplayInForeground" : true
     }
   }
 }
