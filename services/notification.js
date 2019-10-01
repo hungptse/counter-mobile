@@ -23,5 +23,5 @@ export default async function registerForPushNotificationsAsync() {
 
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
-    await AsyncStorage.setItem('device_id', token)
+    await AsyncStorage.setItem('device_id', token.replace("ExponentPushToken[","").replace("]",""))
 }

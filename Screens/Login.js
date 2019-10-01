@@ -23,10 +23,10 @@ class Login extends Component {
          }).then(async res => {
             if (res.status == 200) {
                await AsyncStorage.setItem('jwt_token', res.data.token)
-               let deviceId = await AsyncStorage.getItem('device_id', res.data.token);
+               let deviceId = await AsyncStorage.getItem('device_id');
                await PUT(NOTIFICATION_ENDPOINT, {}, {}, {
                   device_id: deviceId
-               }).then(async res => {
+               }).then(res => {
                   if (res.status === 200) {
                      this.passwordInput.clear();
                      NavigationService.navigate('Dashboard');
