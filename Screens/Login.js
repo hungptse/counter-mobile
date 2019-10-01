@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TextInput, Platform, KeyboardAvoidingView, StatusBar, AsyncStorage } from "react-native";
 import GradientButton from 'react-native-gradient-buttons';
-import { POST } from "../api/caller";
-import { LOGIN_ENDPOINT } from "../api/endpoint";
+import { POST, PUT } from "../api/caller";
+import { LOGIN_ENDPOINT, NOTIFICATION_ENDPOINT } from "../api/endpoint";
 import DropdownAlert from 'react-native-dropdownalert';
 import NavigationService from '../services/navigate';
 
@@ -23,8 +23,15 @@ class Login extends Component {
          }).then(async res => {
             if (res.status == 200) {
                await AsyncStorage.setItem('jwt_token', res.data.token)
-               this.passwordInput.clear();
-               NavigationService.navigate('Dashboard');
+               let deviceId = await AsyncStorage.getItem('device_id', res.data.token);
+               await PUT(NOTIFICATION_ENDPOINT, {}, {}, {
+                  device_id: deviceId
+               }).then(async res => {
+                  if (res.status === 200) {
+                     this.passwordInput.clear();
+                     NavigationService.navigate('Dashboard');
+                  }
+               })
             }
             if (res.status != 200) {
                this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
