@@ -25,6 +25,7 @@ class Settings extends Component {
       if (old_password === '' || new_password === '' || retype_password === '') {
          return;
       } else if (new_password != retype_password) {
+         this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', "Password and confirm password does not match");
          return;
       } else {
          await PUT(CHANGE_PASSWORD_ENDPOINT, {}, {},{
@@ -128,7 +129,7 @@ class Settings extends Component {
                      style={{ width: "75%" }}
                   >
                      <TextInput secureTextEntry
-                        placeholder={"Retype new password"}
+                        placeholder={"Confirm new password"}
                         onChangeText={(content) => this.setState({ retype_password: content })}
                         ref={input => {
                            this.retypePasswordInput = input;
