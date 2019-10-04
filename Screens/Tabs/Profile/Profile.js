@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Icon, ImageBackground, NavigationBar, Title } from '@shoutem/ui'
-import { StyleSheet, Platform, StatusBar, View, Text, Image } from 'react-native'
+import { Icon, ImageBackground, NavigationBar, Title } from '@shoutem/ui';
+import { StyleSheet, Platform, StatusBar, View, Text, Image } from 'react-native';
+import { GET_USER_ENDPOINT } from '../../../api/endpoint';
+import { GET } from "../../../api/caller";
 class Profile extends Component {
-    // state = { stores: [] }
+    state = { profile: {} }
     // async componentDidMount() {
     //     await GET(STORE_LIST_ENDPOINT, {}, {
     //         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJpYXQiOjE1NjkzMjg5MzMsImV4cCI6MTU2OTQxNTMzM30.KCJEFI9UkbsfQxPJAIlZie2mNvJbQYSLS6tVa63OiEk"
@@ -14,16 +16,22 @@ class Profile extends Component {
     //     })
     // }
 
+    async componentDidMount() {
+        await GET(GET_USER_ENDPOINT,{},{}).then(res => {
+            this.setState({ profile: res.data.info });
+        })
+    }
     render() {
         const { navigate } = this.props.navigation;
-        var profile = {
-            name: 'Nguyen Thai Hoa',
-            store: 'Kha Van Can',
-            phone: '0123456789',
-            email: 'hula@gmail.com',
-            address: 'Quan 9, Ho Chi Minh'
+        const { profile } = this.state
+        // var profile = {
+        //     name: 'Nguyen Thai Hoa',
+        //     store: 'Kha Van Can',
+        //     phone: '0123456789',
+        //     email: 'hula@gmail.com',
+        //     address: 'Quan 9, Ho Chi Minh'
 
-        }
+        // }
         return (
             <View style={styles.container}>
                 {/* <View style={styles.wrapIcon}>
@@ -59,8 +67,8 @@ class Profile extends Component {
                         }} >
 
                         <View style={styles.profile}>
-                            <Text style={styles.name} onPress={() => this.props.navigation.navigate('EditProfile',{
-                               profileInf: profile  
+                            <Text style={styles.name} onPress={() => this.props.navigation.navigate('EditProfile', {
+                                profileInf: profile
                             })}>
                                 {profile.name}
                                 {/* <Icon name={'edit'}   style={{ color:'#00365d', marginLeft:10}} /> */}
@@ -95,7 +103,7 @@ class Profile extends Component {
                         <Icon name={'call'} style={styles.icon} />
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile} >Phone</Text>
-                            <Text>{profile.phone}</Text>
+                            <Text>{profile.phone_number}</Text>
                         </View>
                     </View>
                     <View style={styles.myProfile}>
@@ -110,6 +118,13 @@ class Profile extends Component {
                         <View style={styles.profileText}>
                             <Text style={styles.textProfile}>Store</Text>
                             <Text>{profile.store}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.myProfile}>
+                        <Icon name={'users'} style={styles.icon} />
+                        <View style={styles.profileText}>
+                            <Text style={styles.textProfile}>Gender</Text>
+                            <Text>{profile.gender ? "Male" : "Female"}</Text>
                         </View>
                     </View>
                 </View>

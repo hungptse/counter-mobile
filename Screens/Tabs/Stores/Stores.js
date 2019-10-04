@@ -51,14 +51,17 @@ class Stores extends Component{
           ],
         }
       }
-      
+      goToDetail(){
+        NavigationService.navigate("StoreDetails",)
+      }
+
       renderRow(restaurant) {
         if (!restaurant) {
           return null;
         }
       
         return (
-          <TouchableOpacity onPress={() => NavigationService.navigate("StoreDetails")}>
+          <TouchableOpacity onPress={this.goToDetail}>
             <ImageBackground
               styleName="large-banner"
               source={{ uri: restaurant.image.url }}

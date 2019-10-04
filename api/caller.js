@@ -1,10 +1,12 @@
 import { AsyncStorage } from 'react-native';
 
-export const GET = (endpoint, params = {}, headers = {}) => {
+export const GET = async (endpoint, params = {}, headers = {}) => {
+    const token = await AsyncStorage.getItem('jwt_token');
+    headers["Authorization"] = `Bearer ${token}`;
     return fetch(endpoint, {
         method : 'GET',
         headers : headers,
-    });
+    }).then(res => res.json());;
 };
 
 export const POST = (endpoint, params = {}, headers = {}, body = {}) => {

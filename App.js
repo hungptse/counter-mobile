@@ -50,10 +50,10 @@ const Container = createStackNavigator(
       // Stores
       StoreDetails: {
          screen: StoreDetails,
-         // navigationOptions: {
-         //    header: null,
-         //    gesturesEnabled: false
-         // }
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
       },
       // History
       HistoryDetails: {
