@@ -14,6 +14,7 @@ import StoreDetails from './Screens/Tabs/Stores/StoreDetails';
 
 // History
 import HistoryDetails from './Screens/Tabs/History/HistoryDetails';
+import AddRecord from './Screens/Tabs/History/AddRecord';
 
 // Profile
 
@@ -58,10 +59,17 @@ const Container = createStackNavigator(
       // History
       HistoryDetails: {
          screen: HistoryDetails,
-         // navigationOptions: {
-         //    header: null,
-         //    gesturesEnabled: false
-         // }
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      },
+      AddRecord: {
+         screen: AddRecord,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
       },
       // Profile
       Profile: {

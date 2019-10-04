@@ -16,9 +16,9 @@ import NavigationService from '../../../services/navigate';
 
 class Settings extends Component {
    constructor(props) {
-      super(props);
-      
+      super(props); 
    }
+   
    render() {
       const {navigate} = this.props.navigation;
       const confirmLogOut = () => {

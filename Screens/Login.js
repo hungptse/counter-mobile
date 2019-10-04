@@ -15,6 +15,7 @@ class Login extends Component {
    handleLogin = async () => {
       const { username, password } = this.state
       if (username === '' || password === '') {
+         this.dropDownAlertRef.alertWithType('warn', 'HKT Message', "Please fill all input fields");
          return;
       } else {
          await POST(LOGIN_ENDPOINT, {}, {}, {
@@ -24,6 +25,7 @@ class Login extends Component {
             if (res.status == 200) {
                await AsyncStorage.setItem('jwt_token', res.data.token)
                this.passwordInput.clear();
+               this.setState({password: ''})
                NavigationService.navigate('Dashboard');
             }
             if (res.status != 200) {
