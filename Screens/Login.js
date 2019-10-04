@@ -15,6 +15,7 @@ class Login extends Component {
    handleLogin = async () => {
       const { username, password } = this.state
       if (username === '' || password === '') {
+         this.dropDownAlertRef.alertWithType('warn', 'HKT Message', "Please fill all input fields");
          return;
       } else {
          await POST(LOGIN_ENDPOINT, {}, {}, {
@@ -29,6 +30,7 @@ class Login extends Component {
                }).then(res => {
                   if (res.status === 200) {
                      this.passwordInput.clear();
+                     this.setState({password: ''})
                      NavigationService.navigate('Dashboard');
                   }
                })

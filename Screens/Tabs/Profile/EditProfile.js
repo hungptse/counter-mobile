@@ -17,9 +17,10 @@ import { TextInput } from "react-native-gesture-handler";
 
 
 class EditProfile extends Component {
-    state = { profile: {} }
+    state = { profile: {}, newAddress: '', newPhone: '' }
     componentDidMount() {
         this.setState({ profile: this.props.navigation.getParam('profileInf') })
+        
     }
 
     // async componentDidMount() {
@@ -99,6 +100,7 @@ class EditProfile extends Component {
                                 <Text style={styles.textProfile}>Address</Text>
                                 <TextInput maxLength={50}
                                     onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                    onChangeText = {(text) => this.setState({newAddress: text})}
                                     multiline={true}
                                     style={{ borderBottomWidth: 1, width: 200 }}>
                                     {profile.address}
@@ -112,9 +114,10 @@ class EditProfile extends Component {
                                 <TextInput maxLength={11}
                                     ref={(input) => { this.secondTextInput = input; }}
                                     onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                    onChangeText={(text) => this.setState({newPhone: text})}
                                     keyboardType='numeric'
                                     style={{ borderBottomWidth: 1 }}>
-                                    {profile.phone}
+                                    {profile.phone_number}
                                 </TextInput>
                             </View>
                         </View>

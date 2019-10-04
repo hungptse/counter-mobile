@@ -23,6 +23,7 @@ class Settings extends Component {
    handleChangePassword = async () => {
       const { old_password, new_password, retype_password } = this.state
       if (old_password === '' || new_password === '' || retype_password === '') {
+         this.dropDownAlertRef.alertWithType('warn', 'HKT Message', "Please fill all input fields");
          return;
       } else if (new_password != retype_password) {
          this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', "Password and confirm password does not match");
@@ -35,9 +36,12 @@ class Settings extends Component {
          }).then(async res => {
             if (res.status == 200) {
                await this.dropDownAlertRef.alertWithType('success', 'HKT Message', res.message);
+               const sleep = (ms) => {
+                  return new Promise(resolve => setTimeout(resolve, ms));
+               }
+               await sleep(1200);
                NavigationService.navigate('Dashboard');
-            }
-            if (res.status != 200) {
+            } else {
                this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
             }
          })
