@@ -100,7 +100,7 @@ const Container = createStackNavigator(
       }
    },
    {
-      initialRouteName: "StoreDetails",
+      initialRouteName: "Login",
    }
 );
 const AppContainer = createAppContainer(Container);

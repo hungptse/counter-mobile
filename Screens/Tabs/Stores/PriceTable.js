@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Platform, ScrollView, StatusBar } from 'react-native';
 import { FontAwesome, NavigationBar, Title, Icon } from '@shoutem/ui';
 
 export default class PriceTable extends Component {
