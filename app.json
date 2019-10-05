@@ -27,7 +27,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "hkt.fptu.counter"
+      "package": "hkt.fptu.counter",
+      "googleServicesFile": "./google-services.json"
     },
     "notification" : {
       "iosDisplayInForeground" : true
