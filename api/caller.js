@@ -10,7 +10,7 @@ export const GET = async (endpoint, params = {}, headers = {}) => {
     }).then(res => res.json());
 };
 
-export const POST = (endpoint, params = {}, headers = {}, body = {}) => {
+export const POST = async (endpoint, params = {}, headers = {}, body = {}) => {
     headers["Content-Type"] = "application/json"
     return fetch(endpoint, {
         method : 'POST',
