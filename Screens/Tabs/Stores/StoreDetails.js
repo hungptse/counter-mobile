@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, StatusBar, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, ScrollView, Image, } from 'react-native';
 import { FontAwesome, NavigationBar, Title, Icon } from '@shoutem/ui';
+import PriceTable from "./PriceTable.js";
+import GradientButton from 'react-native-gradient-buttons';
+import NavigationService from '../../../services/navigate';
+
+
 
 
 
@@ -52,7 +57,8 @@ class StoreDetails extends Component {
 
                 </View>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <ScrollView style={{ flex: 1 }}>
+                    <ScrollView style={{ flex: 1 }}
+                        showsVerticalScrollIndicator={false}>
                         <Image
                             source={{ uri: 'https://cdn.pixabay.com/photo/2015/05/15/14/55/cafe-768771_1280.jpg' }}
                             style={styles.image} />
@@ -107,6 +113,42 @@ class StoreDetails extends Component {
                                 })
                             }
                         </View> */}
+
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
+                                Water prices
+                            </Text>
+                            <Text style={{ margin: 20, maxWidth: 300, fontSize: 18 }}>
+                                Water prices are applied to the store is: <Text style={{ color: 'rgba(175,175,175,1.2)', fontStyle:'italic'}}>
+                                    19000 VND/m3
+                            </Text>
+                            </Text>
+
+
+
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
+                                Electricity price
+                            </Text>
+                            <Text style={{ margin: 20, maxWidth: 300, fontSize: 18, fontStyle: 'italic', }}>
+                                The shop applies electricity prices according to the state regulations
+                            </Text>
+                            <View style={{ marginBottom: 20, alignItems: 'center' }}>
+                                <GradientButton
+                                    text="Get Table Price"
+                                    width="55%"
+                                    style={{ marginVertical: 2, opacity: 0.9, marginLeft: 20, marginTop: 10 }}
+                                    pinkDarkGreen
+                                    impact
+                                    height={50}
+                                    radius={10}
+                                    textStyle={{ fontSize: 14 }}
+                                    onPressAction={() => NavigationService.navigate("PriceTable")}
+
+                                />
+                            </View>
+                        </View>
                     </ScrollView>
                 </View>
 

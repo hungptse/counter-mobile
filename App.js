@@ -9,6 +9,7 @@ import EditProfile from "./Screens/Tabs/Profile/EditProfile";
 import Profile from "./Screens/Tabs/Profile/Profile";
 import NavigationService from './services/navigate';
 import registerForPushNotificationsAsync from './services/notification'
+import PriceTable from "./Screens/Tabs/Stores/PriceTable"
 import {
    Notifications,
 } from 'expo';
@@ -30,6 +31,8 @@ import ChangePassword from "./Screens/Tabs/Settings/ChangePassword";
 
 const Container = createStackNavigator(
    {
+    
+
       Login: {
          screen: Login,
          navigationOptions: {
@@ -52,6 +55,13 @@ const Container = createStackNavigator(
             gesturesEnabled: false
          }
       },
+      PriceTable:{
+        screen: PriceTable,
+        navigationOptions: {
+           header: null,
+           gesturesEnabled: false
+        }
+    },
       // History
       HistoryDetails: {
          screen: HistoryDetails,

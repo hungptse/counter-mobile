@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Image, TouchableHighlight, StatusBar, ScrollView } from "react-native";
+import { Text, StyleSheet, View, StatusBar, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Icon, ImageBackground } from '@shoutem/ui'
-import { FontAwesome, NavigationBar, Title } from '@shoutem/ui';
+import { Icon } from '@shoutem/ui'
+import { NavigationBar, Title } from '@shoutem/ui';
 import GradientButton from 'react-native-gradient-buttons';
-import { black } from "ansi-colors";
 import { TextInput } from "react-native-gesture-handler";
 
 
@@ -163,7 +162,6 @@ export default EditProfile;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
     iconBack: {
         color: 'black',

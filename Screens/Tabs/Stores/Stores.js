@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import {
    View,
+   Text,
+   Image,
    StatusBar,
    StyleSheet,
    Platform,
@@ -32,7 +34,8 @@ class Stores extends Component {
          { name: "Can Tho", value: "CT" },
          { name: "Da Nang", value: "DN" },
          { name: "Ha Noi", value: "HN" }
-      ]
+      ],
+      search: ""
    };
    constructor(props) {
       super(props);
@@ -106,6 +109,23 @@ class Stores extends Component {
       );
    }
 
+   handleSearch = async content => {
+      this.setState({ search: content });
+
+      let filterValue =
+         this.state.selectedFilter == undefined
+            ? this.state.filters[0]
+            : this.state.selectedFilter;
+
+      this.setState({
+         selectedStore: this.state.stores.filter(
+            s =>
+               (s.city === filterValue.value && s.name.includes(content)) ||
+               (filterValue.value === "ALL" && s.name.includes(content))
+         )
+      });
+   };
+
    render() {
       const { selectedStore } = this.state;
 
@@ -119,7 +139,13 @@ class Stores extends Component {
             />
             <NavigationBar
                styleName="inline"
-               leftComponent={<TextInput placeholder={"Records list"} />}
+               leftComponent={
+                  <TextInput
+                     placeholder={"Records list"}
+                     style={{ width: "150%" }}
+                     onChangeText={this.handleSearch}
+                  />
+               }
                rightComponent={
                   <DropDownMenu
                      options={this.state.filters}
@@ -147,7 +173,13 @@ class Stores extends Component {
                   />
                }
             />
-            <ListView data={selectedStore} renderRow={this.renderRow} />
+            {selectedStore.length != 0 ? (
+               <ListView data={selectedStore} renderRow={this.renderRow} />
+            ) : (
+               <View style={{ alignItems: 'center', paddingTop: '35%' }}>
+                  <Image source={require("../../../assets/not_found.png")} style={{ height: 130, resizeMode: 'contain' }}/>
+               </View>
+            )}
          </View>
       );
    }
