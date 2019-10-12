@@ -18,14 +18,17 @@ import {
    DropDownMenu,
    Row,
    Text,
-   Button
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
 import GradientButton from "react-native-gradient-buttons";
-import VectorIcon from 'react-native-vector-icons/Ionicons';
-import TimeAgo from 'react-native-timeago';
-import { GET, POST } from "../../../api/caller";
-import { HISTORY_LIST_ENDPOINT, GET_USER_ENDPOINT } from "../../../api/endpoint";
+import VectorIcon from "react-native-vector-icons/Ionicons";
+import TimeAgo from "react-native-timeago";
+
+import { GET } from "../../../api/caller";
+import {
+   HISTORY_LIST_ENDPOINT,
+   USER_STORE_ENDPOINT
+} from "../../../api/endpoint";
 
 class History extends Component {
    state = {
@@ -36,7 +39,7 @@ class History extends Component {
          { name: "Electricity", value: "Electricity" },
          { name: "Water", value: "Water" }
       ],
-      search: ""
+      user_store: { store: {} }
    };
 
    constructor(props) {
@@ -57,25 +60,51 @@ class History extends Component {
             }
          })
          .catch(err => console.log(err));
+      await GET(USER_STORE_ENDPOINT, {}, {}).then(async res => {
+         if (res.status == 200) {
+            this.setState({
+               user_store: res.data.user_store
+            });
+         }
+      });
    }
 
    renderRow(history) {
       if (!history) {
          return null;
       }
-
       return (
          <TouchableOpacity
-            onPress={() => NavigationService.navigate("HistoryDetails", { history: history })}
+            onPress={() =>
+               NavigationService.navigate("HistoryDetails", {
+                  store: this.state.user_store.store,
+                  history: history,
+               })
+            }
          >
             <View style={{ height: 15 }}>
                <Divider />
             </View>
             <Row styleName="small">
-               <VectorIcon name={history.counter_type==="Electricity" ? "ios-flash" : "ios-water"} size={30} color="#00365d" />
-               <View styleName="vertical stretch space-between" style={{ marginLeft: 15 ,paddingTop: 5 }}>
+               <VectorIcon
+                  name={
+                     history.counter_type === "Electricity"
+                        ? "ios-flash"
+                        : "ios-water"
+                  }
+                  size={30}
+                  color="#00365d"
+               />
+               <View
+                  styleName="vertical stretch space-between"
+                  style={{ marginLeft: 15, paddingTop: 5 }}
+               >
                   <Subtitle>{history.created_by_name}</Subtitle>
-                  <Caption>{history.counter_type}<Text> - </Text><TimeAgo time={history.createdAt} /></Caption>
+                  <Caption>
+                     {history.counter_type}
+                     <Text> - </Text>
+                     <TimeAgo time={history.createdAt} />
+                  </Caption>
                </View>
             </Row>
          </TouchableOpacity>
@@ -115,11 +144,12 @@ class History extends Component {
                            });
                         } else {
                            this.setState({
-                              selectedHistory: this.state.history.filter(h => h.counter_type === filter.value)
-                           })
+                              selectedHistory: this.state.history.filter(
+                                 h => h.counter_type === filter.value
+                              )
+                           });
                         }
-                     }
-                     }
+                     }}
                      titleProperty="name"
                      valueProperty="value"
                   />
