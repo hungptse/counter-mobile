@@ -77,7 +77,9 @@ class Stores extends Component {
 
       return (
          <TouchableOpacity
-            onPress={() => NavigationService.navigate("StoreDetails")}
+            onPress={() => NavigationService.navigate("StoreDetails", {
+                  storeInf:stores
+            })}
          >
             <ImageBackground
                styleName="large-banner"

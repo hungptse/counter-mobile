@@ -40,7 +40,7 @@ class Settings extends Component {
                   return new Promise(resolve => setTimeout(resolve, ms));
                }
                await sleep(1200);
-               NavigationService.navigate('Dashboard');
+               NavigationService.navigate('HistoryDetails');
             } else {
                this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
             }
