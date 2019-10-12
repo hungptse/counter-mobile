@@ -22,100 +22,60 @@ import {
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
 import GradientButton from "react-native-gradient-buttons";
+import VectorIcon from 'react-native-vector-icons/Ionicons';
+import TimeAgo from 'react-native-timeago';
+import { GET, POST } from "../../../api/caller";
+import { HISTORY_LIST_ENDPOINT, GET_USER_ENDPOINT } from "../../../api/endpoint";
 
 class History extends Component {
+   state = {
+      history: [],
+      selectedHistory: [],
+      filters: [
+         { name: "All", value: "ALL" },
+         { name: "Electricity", value: "Electricity" },
+         { name: "Water", value: "Water" }
+      ],
+      search: ""
+   };
+
    constructor(props) {
       super(props);
 
       this.renderRow = this.renderRow.bind(this);
-
-      this.state = {
-         restaurants: [
-            {
-               name: "Gaspar Brasserie",
-               address: "185 Sutter St, San Francisco, CA 94109",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-1.jpg"
-               }
-            },
-            {
-               name: "Chalk Point Kitchen",
-               address: "527 Broome St, New York, NY 10013",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-2.jpg"
-               }
-            },
-            {
-               name: "Kyoto Amber Upper East",
-               address: "225 Mulberry St, New York, NY 10012",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-3.jpg"
-               }
-            },
-            {
-               name: "Sushi Academy",
-               address: "1900 Warner Ave. Unit A Santa Ana, CA",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-4.jpg"
-               }
-            },
-            {
-               name: "Sushibo",
-               address: "35 Sipes Key, New York, NY 10012",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-5.jpg"
-               }
-            },
-            {
-               name: "Mastergrill",
-               address: "550 Upton Rue, San Francisco, CA 94109",
-               image: {
-                  url:
-                     "https://shoutem.github.io/static/getting-started/restaurant-6.jpg"
-               }
-            }
-         ],
-         filters: [
-            { name: "Electricity", value: "Electricity" },
-            { name: "Water", value: "Water" }
-         ]
-      };
    }
 
-   renderRow(restaurant) {
-      if (!restaurant) {
+   async componentDidMount() {
+      await GET(HISTORY_LIST_ENDPOINT, {}, {})
+         .then(async res => {
+            if (res.status == 200) {
+               this.setState({
+                  history: res.data.items,
+                  selectedHistory: res.data.items
+               });
+            } else {
+            }
+         })
+         .catch(err => console.log(err));
+   }
+
+   renderRow(history) {
+      if (!history) {
          return null;
       }
 
       return (
-         //  <View style={{paddingBottom: 10}}>
-         //    <ImageBackground
-         //      styleName="large-banner"
-         //      source={{ uri: restaurant.image.url }}
-         //    >
-         //      <Tile>
-         //        <Title styleName="md-gutter-bottom bold" style={{fontSize: 25}}>{restaurant.name}</Title>
-         //        <Subtitle styleName="sm-gutter-horizontal bold" style={{fontSize: 15}}>{restaurant.address}</Subtitle>
-         //      </Tile>
-         //    </ImageBackground>
-         //    <Divider styleName="line" />
-         //  </View>
          <TouchableOpacity
             onPress={() => NavigationService.navigate("HistoryDetails")}
          >
             <View style={{ height: 15 }}>
                <Divider />
             </View>
-            <Row styleName="small" style={{ magrinBottom: 50 }}>
-               <Icon name="add-to-favorites-off" />
-               <View styleName="vertical stretch space-between">
-                  <Subtitle>Hey, keep trying!!</Subtitle>
-                  <Caption>Sep 29 · 03:00</Caption>
+            <Row styleName="small">
+               <VectorIcon name={history.counter_type==="Electricity" ? "ios-flash" : "ios-water"} size={30} color="#00365d" />
+               <View styleName="vertical stretch space-between" style={{ marginLeft: 15 ,paddingTop: 5 }}>
+                  <Subtitle>{history.created_by_name}</Subtitle>
+                  <Caption>{history.counter_type}<Text> - </Text><TimeAgo time={history.createdAt} /></Caption>
                </View>
             </Row>
          </TouchableOpacity>
@@ -123,11 +83,10 @@ class History extends Component {
    }
 
    render() {
-      const { restaurants } = this.state;
+      const { selectedHistory } = this.state;
 
       return (
          <View style={styles.navigation}>
-            {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
             <StatusBar
                translucent
                backgroundColor="#000"
@@ -148,8 +107,18 @@ class History extends Component {
                            ? this.state.selectedFilter
                            : this.state.filters[0]
                      }
-                     onOptionSelected={filter =>
-                        this.setState({ selectedFilter: filter })
+                     onOptionSelected={filter => {
+                        this.setState({ selectedFilter: filter });
+                        if (filter.value === "ALL") {
+                           this.setState({
+                              selectedHistory: this.state.history
+                           });
+                        } else {
+                           this.setState({
+                              selectedHistory: this.state.history.filter(h => h.counter_type === filter.value)
+                           })
+                        }
+                     }
                      }
                      titleProperty="name"
                      valueProperty="value"
@@ -157,7 +126,7 @@ class History extends Component {
                }
             />
 
-            <ListView data={restaurants} renderRow={this.renderRow} />
+            <ListView data={selectedHistory} renderRow={this.renderRow} />
             <View style={styles.addNewButton}>
                <GradientButton
                   radius={60}

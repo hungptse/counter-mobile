@@ -151,8 +151,6 @@ class StoreDetails extends Component {
                         </View>
                     </ScrollView>
                 </View>
-
-
             </View>
         );
     }

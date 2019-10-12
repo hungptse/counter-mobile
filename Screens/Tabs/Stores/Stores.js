@@ -95,17 +95,6 @@ class Stores extends Component {
                <Divider />
             </View>
          </TouchableOpacity>
-         //  <Row>
-         // <Image
-         //    styleName="medium rounded-corners"
-         //    source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-6.png' }}
-         // />
-         // <View styleName="vertical stretch space-between">
-         //    <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
-         //    <Caption>20 hours ago</Caption>
-         // </View><Divider styleName="line" />
-
-         // </Row>
       );
    }
 

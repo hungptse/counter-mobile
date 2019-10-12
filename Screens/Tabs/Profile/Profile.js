@@ -60,7 +60,7 @@ class Profile extends Component {
                     }
                 /> */}
                 <View style={styles.header}>
-                    <ImageBackground source={require('../../../assets/fabian-albert-3e3MRBYVE7A-unsplash.jpg')}
+                    <ImageBackground source={require('../../../assets/profile-wallpaper.jpg')}
                         style={{
                             width: '100%', height: '100%', flex: 1, flexDirection: 'column',
                             justifyContent: 'center'
@@ -75,7 +75,7 @@ class Profile extends Component {
 
                             </Text>
                             <Image style={styles.avatar}
-                                source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
+                                source={require('../../../assets/profile-avatar.jpg')} />
 
                         </View>
                     </ImageBackground>
