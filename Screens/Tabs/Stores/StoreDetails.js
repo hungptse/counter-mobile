@@ -12,24 +12,16 @@ import NavigationService from '../../../services/navigate';
 class StoreDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        
     }
-
-    // renderRow() {
-    //     return (
-    //         <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row' }}>
-    //             <View style={{ flex: 1, alignSelf: 'stretch' }} /> { /* Edit these as they are your cells. You may even take parameters to display different data / react elements etc. */}
-    //             <View style={{ flex: 1, alignSelf: 'stretch' }} />
-    //             <View style={{ flex: 1, alignSelf: 'stretch' }} />
-    //             <View style={{ flex: 1, alignSelf: 'stretch' }} />
-    //             <View style={{ flex: 1, alignSelf: 'stretch' }} />
-    //         </View>
-    //     );
-    // }
+    state = {store:{}};
+    componentDidMount() {
+        this.setState({ store: this.props.navigation.getParam('storeInf') })      
+   }
 
     render() {
         const { navigate } = this.props.navigation;
+        const { store } = this.state;
         const data = [1, 2, 3, 4, 5];
         return (
             <View style={styles.container}>
@@ -38,9 +30,7 @@ class StoreDetails extends Component {
                         styleName="inline"
                         leftComponent={
                             <Title style={{ paddingLeft: 20, }} onPress={() => navigate('Dashboard')} >
-                                {/* {this.state.selectedFilter
-                          ? this.state.selectedFilter.value
-                          : this.state.filters[0].value} */}
+                               
                                 <Icon name={'left-arrow'}
 
                                     style={styles.iconBack}
@@ -62,23 +52,23 @@ class StoreDetails extends Component {
                         <Image
                             source={{ uri: 'https://cdn.pixabay.com/photo/2015/05/15/14/55/cafe-768771_1280.jpg' }}
                             style={styles.image} />
-                        <View>
+                        <View >
                             <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
                                 Store Detail
                                 </Text>
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, marginTop:10 }}>
                                 <View style={styles.myProfile}>
                                     <Icon name={'receipt'} style={styles.icon} />
                                     <View style={styles.profileText}>
                                         <Text style={styles.textProfile}>Name</Text>
-                                        <Text>ThangLT</Text>
+                                        <Text>{store.name}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.myProfile}>
                                     <Icon name={'call'} style={styles.icon} />
                                     <View style={styles.profileText}>
                                         <Text style={styles.textProfile} >Phone</Text>
-                                        <Text>1112313113</Text>
+                                        <Text>1231313</Text>
                                     </View>
                                 </View>
 
@@ -86,14 +76,14 @@ class StoreDetails extends Component {
                                     <Icon name={'home'} style={styles.icon} />
                                     <View style={styles.profileText}>
                                         <Text style={styles.textProfile}>Company</Text>
-                                        <Text>HCM</Text>
+                                        <Text>{store.company_name}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.myProfile}>
                                     <Icon name={'address'} style={styles.icon} />
                                     <View style={styles.profileText}>
                                         <Text style={styles.textProfile}>Address</Text>
-                                        <Text>HCM</Text>
+                                        <Text>{store.address}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.myProfile}>
@@ -106,13 +96,7 @@ class StoreDetails extends Component {
 
                             </View>
                         </View>
-                        {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            {
-                                data.map((datum) => { // This will render a row for each data element.
-                                    return this.renderRow();
-                                })
-                            }
-                        </View> */}
+                      
 
                         <View style={{ flex: 1 }}>
                             <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>

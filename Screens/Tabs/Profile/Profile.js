@@ -18,8 +18,17 @@ class Profile extends Component {
 
     async componentDidMount() {
         await GET(GET_USER_ENDPOINT,{},{}).then(res => {
+            // console.log(res);
             this.setState({ profile: res.data.info });
         })
+    }
+
+    async componentDidUpdate(prevProps){
+
+        // await GET(GET_USER_ENDPOINT,{},{}).then(res => {
+        //     // console.log(res);
+        //     this.setState({ profile: res.data.info });
+        // })
     }
     render() {
         const { navigate } = this.props.navigation;

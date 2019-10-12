@@ -11,7 +11,9 @@ export const GET = async (endpoint, params = {}, headers = {}) => {
 };
 
 export const POST = async (endpoint, params = {}, headers = {}, body = {}) => {
-    headers["Content-Type"] = "application/json"
+    const token = await AsyncStorage.getItem('jwt_token'); 
+    headers["Content-Type"] = "application/json";
+    headers["Authorization"] = `Bearer ${token}`;
     return fetch(endpoint, {
         method : 'POST',
         headers : headers,

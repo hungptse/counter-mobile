@@ -1,158 +1,149 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, StatusBar, ScrollView } from "react-native";
+import { Text, 
+    StyleSheet, 
+    View, 
+    KeyboardAvoidingView, 
+    StatusBar, 
+    ScrollView, 
+    Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Icon } from '@shoutem/ui'
 import { NavigationBar, Title } from '@shoutem/ui';
 import GradientButton from 'react-native-gradient-buttons';
 import { TextInput } from "react-native-gesture-handler";
-
-
-// import {Avatar} from "react-native-elements";
-// import { GET } from "../../api/caller";
-// import { STORE_LIST_ENDPOINT } from "../../api/endpoint";
-
-//import Icon from 'react-native-vector-icons/Ionicons'
+import { PUT } from "../../../api/caller";
+import { UPDATE_USER } from "../../../api/endpoint";
+import NavigationService from '../../../services/navigate';
+import DropdownAlert from 'react-native-dropdownalert';
 
 
 
 class EditProfile extends Component {
-    state = { profile: {}, newAddress: '', newPhone: '' }
+    state = { profile: {}, address: '' }
     componentDidMount() {
         this.setState({ profile: this.props.navigation.getParam('profileInf') })
-        
+
     }
 
-    // async componentDidMount() {
-    //     await GET(STORE_LIST_ENDPOINT, {}, {
-    //         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJpYXQiOjE1NjkzMjg5MzMsImV4cCI6MTU2OTQxNTMzM30.KCJEFI9UkbsfQxPJAIlZie2mNvJbQYSLS6tVa63OiEk"
-    //     }).then(res => res.json()).then(res => {
-    //         console.log(res);
-    //         this.setState({ stores: res.data.items })
-    //     }).catch(err => {
-    //         console.log(err);
-    //     })
-    // }
+    handleUpdateProfile = async () => {
+        const { address } = this.state;
+        await PUT(UPDATE_USER, {}, {}, {
+            address: address
+        }).then(async res => {
+            if (res.status == 200) {
+                await this.dropDownAlertRef.alertWithType('success', 'HKT Message', res.message);
+                const sleep = (ms) => {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+                await sleep(1200);
+                NavigationService.navigate('Profile');
+            } else {
+                this.dropDownAlertRef.alertWithType('warn', 'HKT Error Message', res.message);
+            }
+        })
+    }
 
     render() {
         const { navigate } = this.props.navigation;
         const { profile } = this.state;
         return (
-            <View style={styles.container}>
-                {/* <View style={styles.wrapIcon}>
-                    <Icon name={'address'} style={styles.icon} />
-                </View> */}
-                {/* <View style={styles.header}>
-                    <ImageBackground source={require('../../../assets/fabian-albert-3e3MRBYVE7A-unsplash.jpg')}
-                        style={{ width: '100%', height: '100%', flex: 1, flexDirection: 'column', }}>
-                        <View style={styles.editIcon}>
-                            <Ionicons name={'ios-arrow-back'} size={30}
-                                style={styles.iconBack}
-                                onPress={() => navigate('Profile')} />
-                            <Icon name={'edit'} color='#FFF' onPress={() => navigate('Profile')} style={{ color: '#FFF' }} />
-                        </View>
-                        <View style={styles.profile}>
-                            <Text style={styles.name}>
-                                {profile.name}
-                            
-                    </Text>
-                            <Image style={styles.avatar}
-                                source={require('../../../assets/home-bg-OHP-LR-5.jpg')} />
-                        </View>
-                    </ImageBackground>
-                </View> */}
+            <KeyboardAvoidingView behavior="height" style={styles.navigation1}
+                enabled>
+                <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
+                <View style={styles.container}>
 
-                <View style={styles.navigation}>
-                    <NavigationBar
-                        styleName="inline"
-                        leftComponent={
-                            <Title style={{ paddingLeft: 20, }} onPress={() => navigate('Profile')} >
-                                {/* {this.state.selectedFilter
-                          ? this.state.selectedFilter.value
-                          : this.state.filters[0].value} */}
-                                <Ionicons name={'ios-arrow-back'} size={30}
 
-                                    style={styles.iconBack}
-                                />
-                            </Title>
+                    <View style={styles.navigation}>
+                        <NavigationBar
+                            styleName="inline"
+                            leftComponent={
+                                <Title style={{ paddingLeft: 20, }} onPress={() => navigate('Profile')} >
 
-                        }
-                        centerComponent={
-                            <Title style={{ fontWeight: 'bold' }}>
-                                EDIT PROFILE
+                                    <Ionicons name={'ios-arrow-back'} size={30}
+
+                                        style={styles.iconBack}
+                                    />
+                                </Title>
+
+                            }
+                            centerComponent={
+                                <Title style={{ fontWeight: 'bold' }}>
+                                    EDIT PROFILE
                         </Title>}
 
-                    />
-                </View>
-                <ScrollView styles={{ flex: 1 }}>
-                    <View style={styles.body}>
-                        {/* <View style={styles.wrapIcon}>
-                        <Icon name={'address'} style={styles.icon} />
-                    </View> */}
-                        <View style={styles.address}>
-                            {/* <View style={styles.wrapIcon}>
+                        />
+                    </View>
+                    <ScrollView styles={{ flex: 1 }}>
+                        <View style={styles.body}>
+
+                            <View style={styles.address}>
+                                {/* <View style={styles.wrapIcon}>
                         <Ionicons name={'ios-mail-outline'} size={35} color="black" />
                         
                             
                         </View> */}
-                            <Icon name={'address'} style={styles.icon} />
-                            <View style={styles.profileText}>
-                                <Text style={styles.textProfile}>Address</Text>
-                                <TextInput maxLength={50}
-                                    onSubmitEditing={() => { this.secondTextInput.focus(); }}
-                                    onChangeText = {(text) => this.setState({newAddress: text})}
-                                    multiline={true}
-                                    style={{ borderBottomWidth: 1, width: 200 }}>
-                                    {profile.address}
-                                </TextInput>
+                                <Icon name={'address'} style={styles.icon} />
+                                <View style={styles.profileText}>
+                                    <Text style={styles.textProfile}>Address</Text>
+                                    <TextInput maxLength={50}
+                                        onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                                        onChangeText={(text) => this.setState({ address: text })}
+                                        multiline={true}
+                                        style={{ borderBottomWidth: 1, width: 200 }}>
+                                        {profile.address}
+                                    </TextInput>
+                                </View>
                             </View>
-                        </View>
-                        <View style={styles.myProfile}>
-                            <Icon name={'call'} style={styles.icon} />
-                            <View style={styles.profileText}>
-                                <Text style={styles.textProfile} >Phone</Text>
-                                <TextInput maxLength={11}
+                            <View style={styles.myProfile}>
+                                <Icon name={'call'} style={styles.icon} />
+                                <View style={styles.profileText}>
+                                    <Text style={styles.textProfile} >Phone</Text>
+                                    {/* <TextInput maxLength={11}
                                     ref={(input) => { this.secondTextInput = input; }}
                                     onSubmitEditing={() => { this.secondTextInput.focus(); }}
                                     onChangeText={(text) => this.setState({newPhone: text})}
                                     keyboardType='numeric'
                                     style={{ borderBottomWidth: 1 }}>
                                     {profile.phone_number}
-                                </TextInput>
+                                </TextInput> */}
+                                    <Text>{profile.phone_number}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.myProfile}>
+                                <Icon name={'email'} style={styles.icon} />
+                                <View style={styles.profileText}>
+                                    <Text style={styles.textProfile}>Email</Text>
+                                    <Text>{profile.email}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.myProfile}>
+                                <Icon name={'home'} style={styles.icon} />
+                                <View style={styles.profileText}>
+                                    <Text style={styles.textProfile}>Store</Text>
+                                    <Text>{profile.store}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.myProfile}>
+                                <GradientButton
+                                    text="Save"
+                                    width="55%"
+                                    style={{ marginVertical: 2, opacity: 0.9, marginLeft: 20, marginTop: 10 }}
+                                    pinkDarkGreen
+                                    impact
+                                    height={50}
+                                    radius={10}
+                                    textStyle={{ fontSize: 14 }}
+                                    onPressAction={this.handleUpdateProfile}
+                                // onPressAction={() => navigate("Profile")}
+
+                                />
                             </View>
                         </View>
-                        <View style={styles.myProfile}>
-                            <Icon name={'email'} style={styles.icon} />
-                            <View style={styles.profileText}>
-                                <Text style={styles.textProfile}>Email</Text>
-                                <Text>{profile.email}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.myProfile}>
-                            <Icon name={'home'} style={styles.icon} />
-                            <View style={styles.profileText}>
-                                <Text style={styles.textProfile}>Store</Text>
-                                <Text>{profile.store}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.myProfile}>
-                            <GradientButton
-                                text="Save"
-                                width="55%"
-                                style={{ marginVertical: 2, opacity: 0.9, marginLeft: 20, marginTop: 10 }}
-                                pinkDarkGreen
-                                impact
-                                height={50}
-                                radius={10}
-                                textStyle={{ fontSize: 14 }}
-                                onPressAction={() => navigate("Profile")}
-
-                            />
-                        </View>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
 
 
-            </View>
+                </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -245,5 +236,9 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight,
         paddingBottom: 20,
     },
+    navigation1: {
+        marginTop: Platform.OS == "ios" ? 20 : StatusBar.currentHeight,
+        flex: 1
+    }
 
 });
