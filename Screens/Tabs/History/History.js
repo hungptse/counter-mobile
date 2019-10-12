@@ -66,7 +66,7 @@ class History extends Component {
 
       return (
          <TouchableOpacity
-            onPress={() => NavigationService.navigate("HistoryDetails")}
+            onPress={() => NavigationService.navigate("HistoryDetails", { history: history })}
          >
             <View style={{ height: 15 }}>
                <Divider />

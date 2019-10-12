@@ -4,12 +4,18 @@ import { NavigationBar, ImageBackground, Caption, Title, Subtitle, Icon, Image, 
 import NavigationService from '../../../services/navigate';
 
 class History extends Component{
-    
+   state = {
+      history : {}
+   }
     constructor(props) {
         super(props)
       }
       
+      componentDidMount(){
+         this.setState({ history : this.props.navigation.getParam("history") });
+      }
       render() {
+         const { history } = this.state;
         return (
            <View style={styles.navigation}>
               {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
@@ -58,11 +64,11 @@ class History extends Component{
                        <Caption>Address: 123 Kha Van Can, Thu Duc, HCM</Caption>
                  </Row>
                  <Row styleName="small" style={{ height: 30 }}>
-                  <Caption>Time: Oct 03, 2019 - 00:56</Caption>
+                  <Caption>Time: {history.createdAt}</Caption>
                  </Row>
                  <Row styleName="small" style={{ height: 40 }}>
                     <Icon name="add-to-favorites-off" />
-                       <Subtitle>Staff: Luong Thanh Thang</Subtitle>
+                       <Subtitle>Staff: {history.created_by_name}</Subtitle>
                  </Row>
               </View>
               <View style={{ height: 15, backgroundColor: "#F6F6F6" }}>
@@ -70,15 +76,15 @@ class History extends Component{
               </View>
               <Row styleName="small">
                     <Icon name="add-to-favorites-off" />
-                       <Subtitle>Value: 6969</Subtitle>
+                       <Subtitle>Value: {history.value}</Subtitle>
                  </Row>
                  <Row styleName="small">
                     <Icon name="add-to-favorites-off" />
-                       <Subtitle>Type: Electricity</Subtitle>
+                       <Subtitle>Type: {history.counter_type}</Subtitle>
                  </Row>
                  <Row styleName="small">
                     <Icon name="add-to-favorites-off" />
-                       <Subtitle>Counter ID: HCM-TD-PLT-001</Subtitle>
+                       <Subtitle>Counter ID: {history.counter_id}</Subtitle>
                  </Row>
            </View>
         );
