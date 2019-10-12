@@ -44,10 +44,10 @@ class ElectricityScreen extends React.Component {
 
       state = { value: '', counter_id: '', created_by: '', profile: {} }
       handleAddElectricity = async () => {
-            const { value, counter_id, created_by } = this.state;
+            const { value, counter_id, created_by, profile } = this.state;
             await POST(CREATE_COUNTER_TIME, {}, {}, {
                   value: value,
-                  created_by: created_by,
+                  created_by: profile.username,
                   counter_id: counter_id
             }).then(async res => {
                   if (res.status == 200) {
@@ -80,7 +80,7 @@ class ElectricityScreen extends React.Component {
 
                         <TextInput maxLength={15}
 
-                              onChangeText={(content) => this.setState({ value: content, created_by: profile.name, counter_id: 2 })}
+                              onChangeText={(content) => this.setState({ value: content,  counter_id: 2 })}
                               keyboardType='numeric'
                               style={{ borderBottomWidth: 1, width: 200, textAlign: 'center' }}
                               placeholder='Input number of electricity'
@@ -116,14 +116,14 @@ class WaterScreen extends React.Component {
 
       state = { value: '', counter_id: '', created_by: '', profile: {} }
       handleAddWater = async () => {
-            const { value, counter_id, created_by } = this.state;
+            const { value, counter_id, created_by,profile } = this.state;
+            // console.log(profile);
             await POST(CREATE_COUNTER_TIME, {}, {}, {
                   value: value,
-                  created_by: created_by,
+                  created_by: profile.username,
                   counter_id: counter_id
             }).then(async res => {
                   if (res.status == 200) {
-                        
                         NavigationService.navigate('Dashboard');
                   } else {
                         return;
@@ -132,7 +132,6 @@ class WaterScreen extends React.Component {
       }
 
       async componentDidMount() {
-
             await GET(GET_USER_ENDPOINT, {}, {}).then(res => {
                   // console.log(res);
                   this.setState({ profile: res.data.info });
@@ -149,7 +148,7 @@ class WaterScreen extends React.Component {
                         <TextInput
 
                               maxLength={10}
-                              onChangeText={(content) => this.setState({ value: content, created_by: profile.name, counter_id: 3 })}
+                              onChangeText={(content) => this.setState({ value: content, counter_id: 3 })}
                               keyboardType='numeric'
                               style={{ borderBottomWidth: 1, width: 200, textAlign: 'center' }}
                               placeholder='Input number of water'

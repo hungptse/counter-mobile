@@ -5,19 +5,14 @@ import PriceTable from "./PriceTable.js";
 import GradientButton from 'react-native-gradient-buttons';
 import NavigationService from '../../../services/navigate';
 
-
-
-
-
 class StoreDetails extends Component {
     constructor(props) {
         super(props);
-        
     }
-    state = {store:{}};
+    state = { store: {} };
     componentDidMount() {
-        this.setState({ store: this.props.navigation.getParam('storeInf') })      
-   }
+        this.setState({ store: this.props.navigation.getParam('storeInf') })
+    }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -30,7 +25,7 @@ class StoreDetails extends Component {
                         styleName="inline"
                         leftComponent={
                             <Title style={{ paddingLeft: 20, }} onPress={() => navigate('Dashboard')} >
-                               
+
                                 <Icon name={'left-arrow'}
 
                                     style={styles.iconBack}
@@ -42,7 +37,6 @@ class StoreDetails extends Component {
                             <Title style={{ fontWeight: 'bold' }}>
                                 Store Details
                         </Title>}
-
                     />
 
                 </View>
@@ -56,7 +50,7 @@ class StoreDetails extends Component {
                             <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
                                 Store Detail
                                 </Text>
-                            <View style={{ flex: 1, marginTop:10 }}>
+                            <View style={{ flex: 1, marginTop: 10 }}>
                                 <View style={styles.myProfile}>
                                     <Icon name={'receipt'} style={styles.icon} />
                                     <View style={styles.profileText}>
@@ -96,14 +90,14 @@ class StoreDetails extends Component {
 
                             </View>
                         </View>
-                      
+
 
                         <View style={{ flex: 1 }}>
                             <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
                                 Water prices
                             </Text>
                             <Text style={{ margin: 20, maxWidth: 300, fontSize: 18 }}>
-                                Water prices are applied to the store is: <Text style={{ color: 'rgba(175,175,175,1.2)', fontStyle:'italic'}}>
+                                Water prices are applied to the store is: <Text style={{ color: 'rgba(175,175,175,1.2)', fontStyle: 'italic' }}>
                                     19000 VND/m3
                             </Text>
                             </Text>
@@ -135,8 +129,6 @@ class StoreDetails extends Component {
                         </View>
                     </ScrollView>
                 </View>
-
-
             </View>
         );
     }

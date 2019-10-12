@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import {
    View,
-   Text,
+   ScrollView,
+   RefreshControl,
    Image,
    StatusBar,
    StyleSheet,
    Platform,
-   TouchableOpacity
+   TouchableOpacity,
+   SafeAreaView
 } from "react-native";
 import {
    NavigationBar,
@@ -20,6 +22,8 @@ import {
    TextInput
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
+import { BarIndicator } from "react-native-indicators";
+
 import { GET } from "../../../api/caller";
 import { STORE_LIST_ENDPOINT } from "../../../api/endpoint";
 
@@ -35,7 +39,8 @@ class Stores extends Component {
          { name: "Da Nang", value: "DN" },
          { name: "Ha Noi", value: "HN" }
       ],
-      search: ""
+      search: "",
+      refreshing: true
    };
    constructor(props) {
       super(props);
@@ -44,6 +49,12 @@ class Stores extends Component {
    }
 
    async componentDidMount() {
+      this.setState({ refreshing: true });
+      await this.callAPI();
+      this.setState({ refreshing: false });
+   }
+
+   async callAPI() {
       await GET(STORE_LIST_ENDPOINT, {}, {})
          .then(async res => {
             if (res.status == 200) {
@@ -97,17 +108,6 @@ class Stores extends Component {
                <Divider />
             </View>
          </TouchableOpacity>
-         //  <Row>
-         // <Image
-         //    styleName="medium rounded-corners"
-         //    source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-6.png' }}
-         // />
-         // <View styleName="vertical stretch space-between">
-         //    <Subtitle>Fact Check: Wisconsin Music, Film & Photography Debate</Subtitle>
-         //    <Caption>20 hours ago</Caption>
-         // </View><Divider styleName="line" />
-
-         // </Row>
       );
    }
 
@@ -127,9 +127,13 @@ class Stores extends Component {
          )
       });
    };
-
+   onRefresh = async () => {
+      this.setState({ refreshing: true });
+      await this.callAPI().catch(res => {});
+      this.setState({ refreshing: false });
+   };
    render() {
-      const { selectedStore } = this.state;
+      const { selectedStore, refreshing } = this.state;
 
       return (
          <View style={styles.navigation}>
@@ -175,13 +179,59 @@ class Stores extends Component {
                   />
                }
             />
-            {selectedStore.length != 0 ? (
-               <ListView data={selectedStore} renderRow={this.renderRow} />
-            ) : (
-               <View style={{ alignItems: 'center', paddingTop: '35%' }}>
-                  <Image source={require("../../../assets/not_found.png")} style={{ height: 130, resizeMode: 'contain' }}/>
-               </View>
-            )}
+            <SafeAreaView>
+               <ScrollView
+                  contentContainerStyle={{
+                     flex: 1,
+                     justifyContent: "space-between"
+                  }}
+                  refreshControl={
+                     <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}
+                     />
+                  }
+               >
+                  {refreshing ? (
+                     <View style={{ flex: 1 }}>
+                        <BarIndicator
+                           style={{
+                              flex: 1,
+                              marginTop: "60%",
+                              paddingBottom: "20%"
+                           }}
+                           size={50}
+                           color="#00365d"
+                           hidesWhenStopped={false}
+                           animating={true}
+                           interaction={false}
+                           count={5}
+                        />
+                     </View>
+                  ) : (
+                     <View>
+                        {selectedStore.length != 0 ? (
+                           <ListView
+                              data={selectedStore}
+                              renderRow={this.renderRow}
+                           />
+                        ) : (
+                           <View
+                              style={{
+                                 alignItems: "center",
+                                 paddingTop: "35%"
+                              }}
+                           >
+                              <Image
+                                 source={require("../../../assets/not_found.png")}
+                                 style={{ height: 130, resizeMode: "contain" }}
+                              />
+                           </View>
+                        )}
+                     </View>
+                  )}
+               </ScrollView>
+            </SafeAreaView>
          </View>
       );
    }
@@ -192,7 +242,8 @@ export default Stores;
 const styles = StyleSheet.create({
    navigation: {
       paddingTop: StatusBar.currentHeight,
-      paddingBottom: 50
+      flex: 1,
+      paddingBottom: 55
    },
    titleText: {
       fontSize: 20,
