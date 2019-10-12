@@ -4,7 +4,9 @@ import {
    StatusBar,
    StyleSheet,
    Platform,
-   TouchableOpacity
+   TouchableOpacity,
+   RefreshControl,
+   ScrollView
 } from "react-native";
 import {
    NavigationBar,
@@ -17,12 +19,15 @@ import {
    Divider,
    DropDownMenu,
    Row,
-   Text,
+   Text
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
 import GradientButton from "react-native-gradient-buttons";
 import VectorIcon from "react-native-vector-icons/Ionicons";
 import TimeAgo from "react-native-timeago";
+import {
+   BarIndicator
+} from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
 import {
@@ -39,7 +44,8 @@ class History extends Component {
          { name: "Electricity", value: "Electricity" },
          { name: "Water", value: "Water" }
       ],
-      user_store: { store: {} }
+      user_store: { store: {} },
+      refreshing: false
    };
 
    constructor(props) {
@@ -49,6 +55,12 @@ class History extends Component {
    }
 
    async componentDidMount() {
+      this.setState({ refreshing: true });
+      await this.callAPI();
+      this.setState({ refreshing: false });
+   }
+
+   async callAPI() {
       await GET(HISTORY_LIST_ENDPOINT, {}, {})
          .then(async res => {
             if (res.status == 200) {
@@ -78,7 +90,7 @@ class History extends Component {
             onPress={() =>
                NavigationService.navigate("HistoryDetails", {
                   store: this.state.user_store.store,
-                  history: history,
+                  history: history
                })
             }
          >
@@ -110,53 +122,97 @@ class History extends Component {
          </TouchableOpacity>
       );
    }
-
+   onRefresh = async () => {
+      this.setState({ refreshing: true });
+      await this.callAPI();
+      this.setState({ refreshing: false });
+   };
    render() {
-      const { selectedHistory } = this.state;
+      const { selectedHistory, refreshing } = this.state;
+
+      // const [refreshing, setRefreshing] = React.useState(false);
+
+      // const onRefresh = React.useCallback(() => {
+      //    setRefreshing(true);
+
+      //    wait(2000).then(() => setRefreshing(false));
+      // }, [refreshing]);
 
       return (
          <View style={styles.navigation}>
-            <StatusBar
-               translucent
-               backgroundColor="#000"
-               barStyle={
-                  Platform.OS == "ios" ? "dark-content" : "light-content"
-               }
-            />
-            <NavigationBar
-               styleName="inline"
-               leftComponent={
-                  <Title style={{ paddingLeft: 20 }}>Records list</Title>
-               }
-               rightComponent={
-                  <DropDownMenu
-                     options={this.state.filters}
-                     selectedOption={
-                        this.state.selectedFilter
-                           ? this.state.selectedFilter
-                           : this.state.filters[0]
-                     }
-                     onOptionSelected={filter => {
-                        this.setState({ selectedFilter: filter });
-                        if (filter.value === "ALL") {
-                           this.setState({
-                              selectedHistory: this.state.history
-                           });
-                        } else {
-                           this.setState({
-                              selectedHistory: this.state.history.filter(
-                                 h => h.counter_type === filter.value
-                              )
-                           });
-                        }
-                     }}
-                     titleProperty="name"
-                     valueProperty="value"
+            <ScrollView contentContainerStyle={{ flex: 1, justifyContent: "space-between"}}
+               refreshControl={
+                  <RefreshControl
+                     refreshing={refreshing}
+                     onRefresh={this.onRefresh}
+                     title="Ahhhhhhhhhhh"
                   />
                }
-            />
-
-            <ListView data={selectedHistory} renderRow={this.renderRow} />
+            >
+               <StatusBar
+                  translucent
+                  backgroundColor="#000"
+                  barStyle={
+                     Platform.OS == "ios" ? "dark-content" : "light-content"
+                  }
+               />
+               <NavigationBar
+                  styleName="inline"
+                  leftComponent={
+                     <Title style={{ paddingLeft: 20 }}>Records list</Title>
+                  }
+                  rightComponent={
+                     <DropDownMenu
+                        options={this.state.filters}
+                        selectedOption={
+                           this.state.selectedFilter
+                              ? this.state.selectedFilter
+                              : this.state.filters[0]
+                        }
+                        onOptionSelected={filter => {
+                           this.setState({ selectedFilter: filter });
+                           if (filter.value === "ALL") {
+                              this.setState({
+                                 selectedHistory: this.state.history
+                              });
+                           } else {
+                              this.setState({
+                                 selectedHistory: this.state.history.filter(
+                                    h => h.counter_type === filter.value
+                                 )
+                              });
+                           }
+                        }}
+                        titleProperty="name"
+                        valueProperty="value"
+                     />
+                  }
+               />
+               {/* <BarIndicator
+               color="black"
+               hidesWhenStopped={false}
+               animating={true}
+               interaction={false}
+               count={5}
+            /> */}
+               {refreshing ? (
+                  <View
+                     style={styles.overlay}
+                  >
+                     <BarIndicator
+                        size={50}
+                        color="#00365d"
+                        hidesWhenStopped={false}
+                        animating={true}
+                        interaction={false}
+                        count={5}
+                     />
+                  </View>
+               ) : (
+                  <ListView data={selectedHistory} renderRow={this.renderRow} />
+               )}
+               {/* <ListView data={selectedHistory} renderRow={this.renderRow} /> */}
+            </ScrollView>
             <View style={styles.addNewButton}>
                <GradientButton
                   radius={60}
@@ -195,5 +251,8 @@ const styles = StyleSheet.create({
    titleText: {
       fontSize: 20,
       fontWeight: "bold"
-   }
+   },
+   overlay: {
+      flex: 1,
+    } 
 });
