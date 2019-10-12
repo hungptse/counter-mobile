@@ -3,6 +3,7 @@ import {
    View,
    StatusBar,
    StyleSheet,
+   SafeAreaView,
    Platform,
    TouchableOpacity,
    RefreshControl,
@@ -25,9 +26,7 @@ import NavigationService from "../../../services/navigate";
 import GradientButton from "react-native-gradient-buttons";
 import VectorIcon from "react-native-vector-icons/Ionicons";
 import TimeAgo from "react-native-timeago";
-import {
-   BarIndicator
-} from "react-native-indicators";
+import { BarIndicator } from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
 import {
@@ -132,7 +131,51 @@ class History extends Component {
 
       return (
          <View style={styles.navigation}>
-            <ScrollView contentContainerStyle={{ flex: 1, justifyContent: "space-between"}}
+            <StatusBar
+               translucent
+               backgroundColor="#000"
+               barStyle={
+                  Platform.OS == "ios" ? "dark-content" : "light-content"
+               }
+            />
+            <NavigationBar
+               styleName="inline"
+               leftComponent={
+                  <Title style={{ paddingLeft: 20 }}>Records list</Title>
+               }
+               rightComponent={
+                  <DropDownMenu
+                     options={this.state.filters}
+                     selectedOption={
+                        this.state.selectedFilter
+                           ? this.state.selectedFilter
+                           : this.state.filters[0]
+                     }
+                     onOptionSelected={filter => {
+                        this.setState({ selectedFilter: filter });
+                        if (filter.value === "ALL") {
+                           this.setState({
+                              selectedHistory: this.state.history
+                           });
+                        } else {
+                           this.setState({
+                              selectedHistory: this.state.history.filter(
+                                 h => h.counter_type === filter.value
+                              )
+                           });
+                        }
+                     }}
+                     titleProperty="name"
+                     valueProperty="value"
+                  />
+               }
+            />
+            <SafeAreaView>
+            <ScrollView
+               contentContainerStyle={{
+                  flex: 1,
+                  justifyContent: "space-between"
+               }}
                refreshControl={
                   <RefreshControl
                      refreshing={refreshing}
@@ -140,48 +183,10 @@ class History extends Component {
                   />
                }
             >
-               <StatusBar
-                  translucent
-                  backgroundColor="#000"
-                  barStyle={
-                     Platform.OS == "ios" ? "dark-content" : "light-content"
-                  }
-               />
-               <NavigationBar
-                  styleName="inline"
-                  leftComponent={
-                     <Title style={{ paddingLeft: 20 }}>Records list</Title>
-                  }
-                  rightComponent={
-                     <DropDownMenu
-                        options={this.state.filters}
-                        selectedOption={
-                           this.state.selectedFilter
-                              ? this.state.selectedFilter
-                              : this.state.filters[0]
-                        }
-                        onOptionSelected={filter => {
-                           this.setState({ selectedFilter: filter });
-                           if (filter.value === "ALL") {
-                              this.setState({
-                                 selectedHistory: this.state.history
-                              });
-                           } else {
-                              this.setState({
-                                 selectedHistory: this.state.history.filter(
-                                    h => h.counter_type === filter.value
-                                 )
-                              });
-                           }
-                        }}
-                        titleProperty="name"
-                        valueProperty="value"
-                     />
-                  }
-               />
                {refreshing ? (
                   <View style={{ flex: 1 }}>
                      <BarIndicator
+                        style={{flex : 1, marginTop : "60%", paddingBottom : "20%" }}
                         size={50}
                         color="#00365d"
                         hidesWhenStopped={false}
@@ -194,6 +199,7 @@ class History extends Component {
                   <ListView data={selectedHistory} renderRow={this.renderRow} />
                )}
             </ScrollView>
+            </SafeAreaView>
             <View style={styles.addNewButton}>
                <GradientButton
                   radius={60}
