@@ -130,14 +130,6 @@ class History extends Component {
    render() {
       const { selectedHistory, refreshing } = this.state;
 
-      // const [refreshing, setRefreshing] = React.useState(false);
-
-      // const onRefresh = React.useCallback(() => {
-      //    setRefreshing(true);
-
-      //    wait(2000).then(() => setRefreshing(false));
-      // }, [refreshing]);
-
       return (
          <View style={styles.navigation}>
             <ScrollView contentContainerStyle={{ flex: 1, justifyContent: "space-between"}}
@@ -145,7 +137,6 @@ class History extends Component {
                   <RefreshControl
                      refreshing={refreshing}
                      onRefresh={this.onRefresh}
-                     title="Ahhhhhhhhhhh"
                   />
                }
             >
@@ -188,17 +179,8 @@ class History extends Component {
                      />
                   }
                />
-               {/* <BarIndicator
-               color="black"
-               hidesWhenStopped={false}
-               animating={true}
-               interaction={false}
-               count={5}
-            /> */}
                {refreshing ? (
-                  <View
-                     style={styles.overlay}
-                  >
+                  <View style={{ flex: 1 }}>
                      <BarIndicator
                         size={50}
                         color="#00365d"
@@ -211,7 +193,6 @@ class History extends Component {
                ) : (
                   <ListView data={selectedHistory} renderRow={this.renderRow} />
                )}
-               {/* <ListView data={selectedHistory} renderRow={this.renderRow} /> */}
             </ScrollView>
             <View style={styles.addNewButton}>
                <GradientButton
@@ -251,8 +232,5 @@ const styles = StyleSheet.create({
    titleText: {
       fontSize: 20,
       fontWeight: "bold"
-   },
-   overlay: {
-      flex: 1,
-    } 
+   }
 });
