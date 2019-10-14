@@ -5,14 +5,14 @@ import {
    StyleSheet,
    StatusBar,
    ScrollView,
-   ImageBackground
+   ImageBackground,
+   Image
 } from "react-native";
 import { NavigationBar, Title, Icon, Subtitle } from "@shoutem/ui";
 import GradientButton from "react-native-gradient-buttons";
 import NavigationService from "../../../services/navigate";
 import TimeAgo from "react-native-timeago";
 import VectorIcon from "react-native-vector-icons/Ionicons";
-
 
 class StoreDetails extends Component {
    constructor(props) {
@@ -49,7 +49,6 @@ class StoreDetails extends Component {
                   <View style={styles.storeImg}>
                      <ImageBackground
                         style={{ width: "100%", height: "100%" }}
-                        ư
                         source={{
                            uri: store.img
                         }}
@@ -74,15 +73,12 @@ class StoreDetails extends Component {
                      </ImageBackground>
                   </View>
                   <View style={{ flex: 1, marginLeft: 20, marginRight: 20 }}>
-                     <View style={{ alignItems: 'center' }}><Subtitle style={{ fontSize: 20 }}>Store Details</Subtitle></View>
-                     <View style={{ marginTop: 10 }}>
-                        <View style={styles.detailRows}>
-                           <Icon name="receipt" style={styles.detailIcons} />
-                           <View>
-                              <Text style={styles.detailTitles}>Name</Text>
-                              <Text>{store.name}</Text>
-                           </View>
-                        </View>
+                     <View style={{ alignItems: "center" }}>
+                        <Subtitle style={{ fontSize: 20 }}>
+                           Store Details
+                        </Subtitle>
+                     </View>
+                     <View style={{ marginTop: 20 }}>
                         <View style={styles.detailRows}>
                            <Icon name="address" style={styles.detailIcons} />
                            <View>
@@ -107,20 +103,58 @@ class StoreDetails extends Component {
                            </View>
                         </View>
                      </View>
+                     <View style={styles.countCard}>
+                        <View
+                           style={{
+                              flex: 1,
+                              alignItems: "center",
+                              justifyContent: "center"
+                           }}
+                        >
+                           {/* <VectorIcon name="ios-card" size={47} color="#737373" /> */}
+                           <Image
+                              style={{ height: 90, width: 90 }}
+                              source={{
+                                 uri:
+                                    "https://icons-for-free.com/iconfiles/png/512/credit+card+debit+card+master+card+icon-1320184902602310693.png"
+                              }}
+                           />
+                        </View>
+                        <View style={{ flex: 3, marginLeft: 15, marginTop: 7 }}>
+                           <Text style={{ fontSize: 30 }}>
+                              <VectorIcon
+                                 name="ios-flash"
+                                 size={20}
+                                 color="#00365d"
+                              />{" "}
+                              11.217.000 đ
+                           </Text>
+                           <Text style={{ fontSize: 30, marginBottom: 10 }}>
+                              <VectorIcon
+                                 name="ios-water"
+                                 size={20}
+                                 color="#00365d"
+                              />{" "}
+                              6.456.000 đ
+                           </Text>
+                           <Text>Money on current Invoice</Text>
+                           <Text>Time: 10/2019</Text>
+                        </View>
+                     </View>
                   </View>
                </ScrollView>
-					<View style={styles.priceButton}>
-               <GradientButton
-                  radius={60}
-                  text={
-                     <VectorIcon name="ios-wallet" size={27} />
-                  }
-                  width="100%"
-                  height="100%"
-                  deepBlue
-                  onPressAction={() => NavigationService.navigate("PriceTable")}
-               />
-            </View>
+               <View style={styles.priceButton}>
+                  <GradientButton
+                     radius={60}
+                     text={<VectorIcon name="ios-list-box" size={27} />}
+                     width="100%"
+                     height="100%"
+                     deepBlue
+                     onPressAction={() =>
+                        NavigationService.navigate("PriceTable")
+                     }
+                  />
+               </View>
             </View>
          </View>
       );
@@ -162,7 +196,7 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: "row",
       marginLeft: 30,
-      marginBottom: 20
+      marginBottom: 25
    },
    detailTitles: {
       opacity: 0.5
@@ -175,12 +209,32 @@ const styles = StyleSheet.create({
       borderRadius: 22,
       paddingTop: 2,
       borderColor: "rgba(83,80,158,0.1)"
-	},
-	priceButton: {
-		width: 60,
+   },
+   countCard: {
+      flex: 1,
+      flexDirection: "row",
+      marginTop: 40,
+      height: 160,
+      backgroundColor: "#fcfcfc",
+      borderRadius: 10,
+      overflow: "hidden",
+      marginBottom: 15,
+
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 4
+      },
+      shadowOpacity: 0.32,
+      shadowRadius: 5.46,
+
+      elevation: 9
+   },
+   priceButton: {
+      width: 60,
       height: 60,
-		position: "absolute",
+      position: "absolute",
       bottom: 25,
       right: 35
-	}
+   }
 });
