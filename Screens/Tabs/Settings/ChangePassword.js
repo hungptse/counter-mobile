@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StatusBar, StyleSheet, ScrollView, Platform, KeyboardAvoidingView, TextInput } from "react-native";
+import { View, StatusBar, StyleSheet, Platform, KeyboardAvoidingView, Text, TextInput } from "react-native";
 import {
    Caption,
    Icon,
@@ -8,17 +8,28 @@ import {
 } from "@shoutem/ui";
 import GradientButton from 'react-native-gradient-buttons';
 
-import { PUT } from "../../../api/caller";
-import { CHANGE_PASSWORD_ENDPOINT } from "../../../api/endpoint";
+import { PUT, GET } from "../../../api/caller";
+import { CHANGE_PASSWORD_ENDPOINT, GET_USER_ENDPOINT } from "../../../api/endpoint";
 import DropdownAlert from 'react-native-dropdownalert';
 import NavigationService from '../../../services/navigate';
 
 class Settings extends Component {
+   
+   state = {
+      old_password: '', new_password: '', retype_password: '',
+      user: {}
+   }
    constructor(props) {
       super(props);
    }
 
-   state = { old_password: '', new_password: '', retype_password: '' }
+   async componentDidMount() {
+      GET(GET_USER_ENDPOINT, {}, {}).then(res => {
+         if (res.status == 200) {
+            this.setState({ user: res.data.info })
+         }
+      })
+   }
 
    handleChangePassword = async () => {
       const { old_password, new_password, retype_password } = this.state
@@ -50,36 +61,11 @@ class Settings extends Component {
 
    render() {
       const {navigate} = this.props.navigation;
+      const { user } = this.state;
       return (
          <KeyboardAvoidingView behavior="height" style={styles.navigation}
          enabled>
          <DropdownAlert ref={ref => this.dropDownAlertRef = ref} />
-
-            {/* <View style={styles.navigation}>
-               <StatusBar
-                  translucent
-                  barStyle={
-                     Platform.OS == "ios" ? "dark-content" : "light-content"
-                  }
-               />
-               <Tile>
-                  <ImageBackground
-                     styleName="large-banner"
-                     source={{
-                        uri:
-                           "https://shoutem.github.io/img/ui-toolkit/examples/image-7.png"
-                     }}
-                  >
-                     <Title style={{ color: "white" }}>
-                        HKT PROJECT FALL 2019
-                     </Title>
-                     <Caption style={{ color: "white", fontSize: 16 }}>
-                        FPT University
-                     </Caption>
-                  </ImageBackground>
-               </Tile>
-            </View> */}
-            {/* <ScrollView style={{ paddingBottom: 55 }}> */}
             <View
                   style={{
                      flexGrow: 1,
@@ -88,6 +74,10 @@ class Settings extends Component {
                      padding: 27
                   }}
                >
+               <View>
+                  <Text>Hello {user.name}!</Text>
+                  <Text>Username: {user.username}</Text>
+               </View>
                <Divider style={{ paddingTop: 50 }}>
                   <Caption style={{ paddingLeft: 10 }}>CHANGE PASSWORD</Caption>
                </Divider>

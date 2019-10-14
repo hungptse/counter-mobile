@@ -21,26 +21,24 @@ import {
    Button
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
+import TimeAgo from "react-native-timeago";
+
 import { GET } from "../../../api/caller";
 import { USER_STORE_ENDPOINT } from "../../../api/endpoint";
 
 class HistoryDetail extends Component {
    state = {
-      history: {},
-      store: {}
+      history: { in_store: {} }
    };
    constructor(props) {
       super(props);
    }
 
    componentDidMount() {
-      this.setState({
-         history: this.props.navigation.getParam("history"),
-         store: this.props.navigation.getParam("store")
-      });   
+      this.setState({ history: this.props.navigation.getParam("history") });   
    }
    render() {
-      const { history, store } = this.state;
+      const { history } = this.state;
       return (
          <View style={styles.navigation}>
             {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
@@ -60,7 +58,7 @@ class HistoryDetail extends Component {
                      onPress={() => NavigationService.navigate("History")}
                   />
                }
-               centerComponent={<Title>Record details</Title>}
+               centerComponent={<Title>RECORD DETAILS</Title>}
             />
             <View>
                <Image
@@ -83,13 +81,13 @@ class HistoryDetail extends Component {
             >
                <Row styleName="small" style={{ height: 60 }}>
                   <Icon name="home" />
-                  <Subtitle>{store.name}</Subtitle>
+                  <Subtitle>{history.in_store.name}</Subtitle>
                </Row>
                <Row styleName="small" style={{ height: 30 }}>
-                  <Caption>Address: {store.address}</Caption>
+                  <Caption>Address: {history.in_store.address}</Caption>
                </Row>
                <Row styleName="small" style={{ height: 30 }}>
-                  <Caption>Time: {history.createdAt}</Caption>
+                  <Caption>Time: <TimeAgo time={history.createdAt} /></Caption>
                </Row>
                <Row styleName="small" style={{ height: 40 }}>
                   <Icon name="add-to-favorites-off" />
