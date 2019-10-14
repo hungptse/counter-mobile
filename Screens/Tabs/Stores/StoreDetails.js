@@ -1,183 +1,240 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, StatusBar, ScrollView, Image, } from 'react-native';
-import { FontAwesome, NavigationBar, Title, Icon } from '@shoutem/ui';
-import PriceTable from "./PriceTable.js";
-import GradientButton from 'react-native-gradient-buttons';
-import NavigationService from '../../../services/navigate';
+import React, { Component } from "react";
+import {
+   View,
+   Text,
+   StyleSheet,
+   StatusBar,
+   ScrollView,
+   ImageBackground,
+   Image
+} from "react-native";
+import { NavigationBar, Title, Icon, Subtitle } from "@shoutem/ui";
+import GradientButton from "react-native-gradient-buttons";
+import NavigationService from "../../../services/navigate";
+import TimeAgo from "react-native-timeago";
+import VectorIcon from "react-native-vector-icons/Ionicons";
 
 class StoreDetails extends Component {
-    constructor(props) {
-        super(props);
-    }
-    state = { store: {} };
-    componentDidMount() {
-        this.setState({ store: this.props.navigation.getParam('storeInf') })
-    }
+   constructor(props) {
+      super(props);
+   }
+   state = { store: {} };
+   componentDidMount() {
+      this.setState({ store: this.props.navigation.getParam("storeInf") });
+   }
 
-    render() {
-        const { navigate } = this.props.navigation;
-        const { store } = this.state;
-        const data = [1, 2, 3, 4, 5];
-        return (
-            <View style={styles.container}>
-                <View style={styles.navigation}>
-                    <NavigationBar
-                        styleName="inline"
-                        leftComponent={
-                            <Title style={{ paddingLeft: 20, }} onPress={() => navigate('Dashboard')} >
-
-                                <Icon name={'left-arrow'}
-
-                                    style={styles.iconBack}
-                                />
-                            </Title>
-
-                        }
-                        centerComponent={
-                            <Title style={{ fontWeight: 'bold' }}>
-                                Store Details
-                        </Title>}
-                    />
-
-                </View>
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                    <ScrollView style={{ flex: 1 }}
-                        showsVerticalScrollIndicator={false}>
-                        <Image
-                            source={{ uri: 'https://cdn.pixabay.com/photo/2015/05/15/14/55/cafe-768771_1280.jpg' }}
-                            style={styles.image} />
-                        <View >
-                            <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
-                                Store Detail
-                                </Text>
-                            <View style={{ flex: 1, marginTop: 10 }}>
-                                <View style={styles.myProfile}>
-                                    <Icon name={'receipt'} style={styles.icon} />
-                                    <View style={styles.profileText}>
-                                        <Text style={styles.textProfile}>Name</Text>
-                                        <Text>{store.name}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.myProfile}>
-                                    <Icon name={'call'} style={styles.icon} />
-                                    <View style={styles.profileText}>
-                                        <Text style={styles.textProfile} >Phone</Text>
-                                        <Text>1231313</Text>
-                                    </View>
-                                </View>
-
-                                <View style={styles.myProfile}>
-                                    <Icon name={'home'} style={styles.icon} />
-                                    <View style={styles.profileText}>
-                                        <Text style={styles.textProfile}>Company</Text>
-                                        <Text>{store.company_name}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.myProfile}>
-                                    <Icon name={'address'} style={styles.icon} />
-                                    <View style={styles.profileText}>
-                                        <Text style={styles.textProfile}>Address</Text>
-                                        <Text>{store.address}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.myProfile}>
-                                    <Icon name={'user-profile'} style={styles.icon} />
-                                    <View style={styles.profileText}>
-                                        <Text style={styles.textProfile}>Manager</Text>
-                                        <Text>ThangLT</Text>
-                                    </View>
-                                </View>
-
-                            </View>
-                        </View>
-
-
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
-                                Water prices
-                            </Text>
-                            <Text style={{ margin: 20, maxWidth: 300, fontSize: 18 }}>
-                                Water prices are applied to the store is: <Text style={{ color: 'rgba(175,175,175,1.2)', fontStyle: 'italic' }}>
-                                    19000 VND/m3
-                            </Text>
-                            </Text>
-
-
-
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginTop: 15, fontSize: 25, fontWeight: 'bold' }}>
-                                Electricity price
-                            </Text>
-                            <Text style={{ margin: 20, maxWidth: 300, fontSize: 18, fontStyle: 'italic', }}>
-                                The shop applies electricity prices according to the state regulations
-                            </Text>
-                            <View style={{ marginBottom: 20, alignItems: 'center' }}>
-                                <GradientButton
-                                    text="Get Table Price"
-                                    width="55%"
-                                    style={{ marginVertical: 2, opacity: 0.9, marginLeft: 20, marginTop: 10 }}
-                                    pinkDarkGreen
-                                    impact
-                                    height={50}
-                                    radius={10}
-                                    textStyle={{ fontSize: 14 }}
-                                    onPressAction={() => NavigationService.navigate("PriceTable")}
-
-                                />
-                            </View>
-                        </View>
-                    </ScrollView>
-                </View>
+   render() {
+      const { navigate } = this.props.navigation;
+      const { store } = this.state;
+      return (
+         <View style={styles.container}>
+            <View style={styles.navigation}>
+               <NavigationBar
+                  styleName="inline"
+                  leftComponent={
+                     <Icon
+                        name="left-arrow"
+                        style={{ fontSize: 35 }}
+                        onPress={() => NavigationService.navigate("Dashboard")}
+                     />
+                  }
+                  centerComponent={<Title>STORE DETAILS</Title>}
+               />
             </View>
-        );
-    }
+            <View style={{ flex: 1 }}>
+               <ScrollView
+                  style={{ flex: 1 }}
+                  showsVerticalScrollIndicator={false}
+               >
+                  <View style={styles.storeImg}>
+                     <ImageBackground
+                        style={{ width: "100%", height: "100%" }}
+                        source={{
+                           uri: store.img
+                        }}
+                     >
+                        <View
+                           style={{
+                              flex: 1,
+                              alignItems: "center",
+                              justifyContent: "center"
+                           }}
+                        >
+                           <Title
+                              styleName="md-gutter-bottom bold"
+                              style={{
+                                 fontSize: 25,
+                                 color: "#00365d"
+                              }}
+                           >
+                              {store.name}
+                           </Title>
+                        </View>
+                     </ImageBackground>
+                  </View>
+                  <View style={{ flex: 1, marginLeft: 20, marginRight: 20 }}>
+                     <View style={{ alignItems: "center" }}>
+                        <Subtitle style={{ fontSize: 20 }}>
+                           Store Details
+                        </Subtitle>
+                     </View>
+                     <View style={{ marginTop: 20 }}>
+                        <View style={styles.detailRows}>
+                           <Icon name="address" style={styles.detailIcons} />
+                           <View>
+                              <Text style={styles.detailTitles}>Address</Text>
+                              <Text>{store.address}</Text>
+                           </View>
+                        </View>
+                        <View style={styles.detailRows}>
+                           <Icon name="home" style={styles.detailIcons} />
+                           <View>
+                              <Text style={styles.detailTitles}>Company</Text>
+                              <Text>{store.company_name}</Text>
+                           </View>
+                        </View>
+                        <View style={styles.detailRows}>
+                           <Icon name="about" style={styles.detailIcons} />
+                           <View>
+                              <Text style={styles.detailTitles}>Opening</Text>
+                              <Text>
+                                 <TimeAgo time={store.createdAt} />
+                              </Text>
+                           </View>
+                        </View>
+                     </View>
+                     <View style={styles.countCard}>
+                        <View
+                           style={{
+                              flex: 1,
+                              alignItems: "center",
+                              justifyContent: "center"
+                           }}
+                        >
+                           {/* <VectorIcon name="ios-card" size={47} color="#737373" /> */}
+                           <Image
+                              style={{ height: 90, width: 90 }}
+                              source={{
+                                 uri:
+                                    "https://icons-for-free.com/iconfiles/png/512/credit+card+debit+card+master+card+icon-1320184902602310693.png"
+                              }}
+                           />
+                        </View>
+                        <View style={{ flex: 3, marginLeft: 15, marginTop: 7 }}>
+                           <Text style={{ fontSize: 30 }}>
+                              <VectorIcon
+                                 name="ios-flash"
+                                 size={20}
+                                 color="#00365d"
+                              />{" "}
+                              11.217.000 đ
+                           </Text>
+                           <Text style={{ fontSize: 30, marginBottom: 10 }}>
+                              <VectorIcon
+                                 name="ios-water"
+                                 size={20}
+                                 color="#00365d"
+                              />{" "}
+                              6.456.000 đ
+                           </Text>
+                           <Text>Money on current Invoice</Text>
+                           <Text>Time: 10/2019</Text>
+                        </View>
+                     </View>
+                  </View>
+               </ScrollView>
+               <View style={styles.priceButton}>
+                  <GradientButton
+                     radius={60}
+                     text={<VectorIcon name="ios-arrow-forward" size={27} />}
+                     width="100%"
+                     height="100%"
+                     deepBlue
+                     onPressAction={() =>
+                        NavigationService.navigate("PriceTable")
+                     }
+                  />
+               </View>
+            </View>
+         </View>
+      );
+   }
 }
 
 export default StoreDetails;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    iconBack: {
-        fontSize: 30,
+   container: {
+      flex: 1
+   },
+   storeImg: {
+      flex: 1,
+      height: 200,
+      margin: 20,
+      overflow: "hidden",
+      borderRadius: 15,
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 4
+      },
+      shadowOpacity: 0.32,
+      shadowRadius: 5.46,
 
-    },
-    image: {
-        width: 335,
-        height: 293,
-        shadowColor: 'rgba(12, 93, 255, 0.14)',
-        shadowOffset: { width: 1, height: 0 },
-        shadowRadius: 20,
-        borderRadius: 16,
-    },
+      elevation: 9
+   },
+   storeImage: {
+      width: "100%",
+      height: 200,
+      borderRadius: 15,
+      marginBottom: 15
+   },
+   navigation: {
+      paddingTop: StatusBar.currentHeight
+   },
+   detailRows: {
+      flex: 1,
+      flexDirection: "row",
+      marginLeft: 30,
+      marginBottom: 25
+   },
+   detailTitles: {
+      opacity: 0.5
+   },
+   detailIcons: {
+      marginRight: 15,
+      width: 44,
+      height: 44,
+      borderWidth: 3,
+      borderRadius: 22,
+      paddingTop: 2,
+      borderColor: "rgba(83,80,158,0.1)"
+   },
+   countCard: {
+      flex: 1,
+      flexDirection: "row",
+      marginTop: 40,
+      height: 160,
+      backgroundColor: "#fcfcfc",
+      borderRadius: 10,
+      overflow: "hidden",
+      marginBottom: 15,
 
-    navigation: {
-        paddingTop: StatusBar.currentHeight,
-        paddingBottom: 20,
-    },
-    myProfile: {
-        flex: 1,
-        flexDirection: 'row',
-        marginLeft: 60,
-        marginBottom: 20
-    },
-    profileText: {
-        flexDirection: 'column',
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 4
+      },
+      shadowOpacity: 0.32,
+      shadowRadius: 5.46,
 
-    },
-    textProfile: {
-        opacity: 0.5
-    },
-    icon: {
-        marginRight: 25,
-        width: 40,
-        height: 40,
-        borderWidth: 3,
-        borderRadius: 20,
-        paddingTop: 5,
-        borderColor: 'rgba(83,80,158,0.1)'
-
-    },
+      elevation: 9
+   },
+   priceButton: {
+      width: 60,
+      height: 60,
+      position: "absolute",
+      bottom: 60,
+      right: 10
+   }
 });

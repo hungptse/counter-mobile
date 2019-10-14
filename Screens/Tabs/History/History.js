@@ -43,17 +43,19 @@ class History extends Component {
          { name: "Electricity", value: "Electricity" },
          { name: "Water", value: "Water" }
       ],
-      user_store: { store: {} },
+      selectedFilter : {},
       refreshing: false
    };
 
    constructor(props) {
       super(props);
-
+      
       this.renderRow = this.renderRow.bind(this);
    }
 
    async componentDidMount() {
+      this.setState({selectedFilter : this.state.filters[0]})
+
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
@@ -71,13 +73,6 @@ class History extends Component {
             }
          })
          .catch(err => console.log(err));
-      await GET(USER_STORE_ENDPOINT, {}, {}).then(async res => {
-         if (res.status == 200) {
-            this.setState({
-               user_store: res.data.user_store
-            });
-         }
-      });
    }
 
    renderRow(history) {
@@ -88,7 +83,6 @@ class History extends Component {
          <TouchableOpacity
             onPress={() =>
                NavigationService.navigate("HistoryDetails", {
-                  store: this.state.user_store.store,
                   history: history
                })
             }
@@ -97,7 +91,7 @@ class History extends Component {
                <Divider />
             </View>
             <Row styleName="small">
-               <VectorIcon
+            <VectorIcon
                   name={
                      history.counter_type === "Electricity"
                         ? "ios-flash"
@@ -107,21 +101,21 @@ class History extends Component {
                   color="#00365d"
                />
                <View
-                  styleName="vertical stretch space-between"
+                  styleName="vertical"
                   style={{ marginLeft: 15, paddingTop: 5 }}
                >
-                  <Subtitle>{history.created_by_name}</Subtitle>
+                  <Subtitle>Recorded <TimeAgo time={history.createdAt} /> by {history.created_by_name}</Subtitle>
                   <Caption>
-                     {history.counter_type}
-                     <Text> - </Text>
-                     <TimeAgo time={history.createdAt} />
+                     at {history.in_store.name}
                   </Caption>
                </View>
+               <Icon styleName="disclosure" name="right-arrow" style={{ position: 'absolute', right: 15 }}/>               
             </Row>
          </TouchableOpacity>
       );
    }
    onRefresh = async () => {
+      this.setState({selectedFilter : this.state.filters[0]})
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
@@ -148,8 +142,6 @@ class History extends Component {
                      options={this.state.filters}
                      selectedOption={
                         this.state.selectedFilter
-                           ? this.state.selectedFilter
-                           : this.state.filters[0]
                      }
                      onOptionSelected={filter => {
                         this.setState({ selectedFilter: filter });

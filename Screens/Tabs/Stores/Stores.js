@@ -8,12 +8,13 @@ import {
    StyleSheet,
    Platform,
    TouchableOpacity,
-   SafeAreaView
+   SafeAreaView,
+   ImageBackground,
+   Keyboard
 } from "react-native";
 import {
    NavigationBar,
    ListView,
-   ImageBackground,
    Tile,
    Title,
    Subtitle,
@@ -26,7 +27,13 @@ import { BarIndicator } from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
 import { STORE_LIST_ENDPOINT } from "../../../api/endpoint";
+import { hidden } from "ansi-colors";
 
+const randomImage = [
+   "https://image.freepik.com/free-vector/abstract-technology-concept-design-with-wire-mesh_1017-14624.jpg",
+   "https://image.freepik.com/free-vector/stylish-hexagonal-line-abstract-background_1017-20593.jpg",
+   "https://image.freepik.com/free-vector/cyber-security-concept_53876-93190.jpg"
+];
 class Stores extends Component {
    state = {
       stores: [],
@@ -39,6 +46,7 @@ class Stores extends Component {
          { name: "Da Nang", value: "DN" },
          { name: "Ha Noi", value: "HN" }
       ],
+      selectedFilter: {},
       search: "",
       refreshing: true
    };
@@ -49,6 +57,7 @@ class Stores extends Component {
    }
 
    async componentDidMount() {
+      this.setState({ selectedFilter: this.state.filters[0] });
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
@@ -68,46 +77,78 @@ class Stores extends Component {
          .catch(err => {
             console.log(err);
          });
+      this.state.stores.forEach(s => s["img"] = randomImage[
+         Math.floor(Math.random() * randomImage.length)
+      ])
    }
 
    renderRow(stores) {
       if (!stores) {
          return null;
       }
-
+    
       return (
-         <TouchableOpacity
-            onPress={() => NavigationService.navigate("StoreDetails", {
-                  storeInf:stores
-            })}
-         >
-            <ImageBackground
-               styleName="large-banner"
-               //  source={{ uri: stores.image.url }}
-               source={{
-                  uri:
-                     "https://shoutem.github.io/static/getting-started/restaurant-6.jpg"
-               }}
+         <View style={styles.row}>
+            <TouchableOpacity activeOpacity={0.7}
+               onPress={() =>
+                  NavigationService.navigate("StoreDetails", {
+                     storeInf: stores
+                  })
+               }
             >
-               <Tile>
-                  <Title
-                     styleName="md-gutter-bottom bold"
-                     style={{ fontSize: 25 }}
+               <ImageBackground
+                  style={{ width: "100%", height: "100%" }}
+                  ư
+                  source={{
+                     uri: stores.img
+                  }}
+               >
+                  {/* <Tile>
+                     <Title
+                        styleName="md-gutter-bottom bold"
+                        style={{ fontSize: 25 }}
+                     >
+                        {stores.name}
+                     </Title>
+                     <Subtitle
+                        styleName="sm-gutter-horizontal bold"
+                        style={{ fontSize: 15 }}
+                     >
+                        {stores.address}
+                     </Subtitle>
+                  </Tile> */}
+                  <View
+                     style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center"
+                     }}
                   >
-                     {stores.name}
-                  </Title>
-                  <Subtitle
-                     styleName="sm-gutter-horizontal bold"
-                     style={{ fontSize: 15 }}
-                  >
-                     {stores.address}
-                  </Subtitle>
-               </Tile>
-            </ImageBackground>
+                     <Title
+                        styleName="md-gutter-bottom bold"
+                        style={{
+                           fontSize: 25,
+                           color: "#00365d"
+                        }}
+                     >
+                        {stores.name}
+                     </Title>
+                     <Subtitle
+                        styleName="sm-gutter-horizontal bold"
+                        style={{
+                           fontSize: 15,
+                           color: "#00365d"
+                        }}
+                     >
+                        {stores.address}
+                     </Subtitle>
+                  </View>
+               </ImageBackground>
+            </TouchableOpacity>
             <View style={{ height: 15 }}>
                <Divider />
             </View>
-         </TouchableOpacity>
+         </View>
       );
    }
 
@@ -128,6 +169,9 @@ class Stores extends Component {
       });
    };
    onRefresh = async () => {
+      this.setState({ search: "" });
+      Keyboard.dismiss();
+      this.setState({ selectedFilter: this.state.filters[0] });
       this.setState({ refreshing: true });
       await this.callAPI().catch(res => {});
       this.setState({ refreshing: false });
@@ -147,19 +191,16 @@ class Stores extends Component {
                styleName="inline"
                leftComponent={
                   <TextInput
-                     placeholder={"Records list"}
+                     placeholder={"Stores list"}
                      style={{ width: "150%" }}
                      onChangeText={this.handleSearch}
+                     value={this.state.search}
                   />
                }
                rightComponent={
                   <DropDownMenu
                      options={this.state.filters}
-                     selectedOption={
-                        this.state.selectedFilter
-                           ? this.state.selectedFilter
-                           : this.state.filters[0]
-                     }
+                     selectedOption={this.state.selectedFilter}
                      onOptionSelected={filter => {
                         this.setState({ selectedFilter: filter });
                         if (filter.value === "ALL") {
@@ -243,7 +284,27 @@ const styles = StyleSheet.create({
    navigation: {
       paddingTop: StatusBar.currentHeight,
       flex: 1,
-      paddingBottom: 55
+      paddingBottom: 65
+   },
+   row: {
+      marginLeft: 20,
+      marginRight: 20,
+      marginTop: 20,
+      height: 200,
+      overflow: "hidden",
+      borderRadius: 15,
+      borderWidth: 1,
+      borderColor: "#B9B9B9",
+
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 4
+      },
+      shadowOpacity: 0.32,
+      shadowRadius: 5.46,
+
+      elevation: 9
    },
    titleText: {
       fontSize: 20,
