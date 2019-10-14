@@ -146,7 +146,7 @@ class StoreDetails extends Component {
                <View style={styles.priceButton}>
                   <GradientButton
                      radius={60}
-                     text={<VectorIcon name="ios-list-box" size={27} />}
+                     text={<VectorIcon name="ios-arrow-forward" size={27} />}
                      width="100%"
                      height="100%"
                      deepBlue
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
       width: 60,
       height: 60,
       position: "absolute",
-      bottom: 25,
-      right: 35
+      bottom: 60,
+      right: 10
    }
 });
