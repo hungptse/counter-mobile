@@ -41,7 +41,6 @@ class HistoryDetail extends Component {
       const { history } = this.state;
       return (
          <View style={styles.navigation}>
-            {/* <NavigationBar title="Restaurants" styleName="inline" /> */}
             <StatusBar
                translucent
                backgroundColor="#000"

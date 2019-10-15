@@ -10,7 +10,9 @@ import {
    TouchableOpacity,
    SafeAreaView,
    ImageBackground,
-   Keyboard
+   Keyboard,
+   BackHandler,
+   ToastAndroid
 } from "react-native";
 import {
    NavigationBar,
@@ -48,7 +50,8 @@ class Stores extends Component {
       ],
       selectedFilter: {},
       search: "",
-      refreshing: true
+      refreshing: true,
+      confirmExit: false
    };
    constructor(props) {
       super(props);
@@ -56,11 +59,35 @@ class Stores extends Component {
       this.renderRow = this.renderRow.bind(this);
    }
 
+   handleBackButton = () => {
+      if (!this.state.confirmExit) {
+         ToastAndroid.showWithGravityAndOffset(
+            "Tap again to exit!",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+         );
+         this.setState({ confirmExit: true })
+         return true;
+      } else {
+         BackHandler.exitApp();
+      }
+   };
+
    async componentDidMount() {
       this.setState({ selectedFilter: this.state.filters[0] });
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
+
+      this.backHandler = BackHandler.addEventListener(
+         "hardwareBackPress",
+         this.handleBackButton
+      );
+   }
+   componentWillUnmount() {
+      this.backHandler.remove();
    }
 
    async callAPI() {
@@ -77,19 +104,22 @@ class Stores extends Component {
          .catch(err => {
             console.log(err);
          });
-      this.state.stores.forEach(s => s["img"] = randomImage[
-         Math.floor(Math.random() * randomImage.length)
-      ])
+      this.state.stores.forEach(
+         s =>
+            (s["img"] =
+               randomImage[Math.floor(Math.random() * randomImage.length)])
+      );
    }
 
    renderRow(stores) {
       if (!stores) {
          return null;
       }
-    
+
       return (
          <View style={styles.row}>
-            <TouchableOpacity activeOpacity={0.7}
+            <TouchableOpacity
+               activeOpacity={0.7}
                onPress={() =>
                   NavigationService.navigate("StoreDetails", {
                      storeInf: stores
@@ -103,20 +133,6 @@ class Stores extends Component {
                      uri: stores.img
                   }}
                >
-                  {/* <Tile>
-                     <Title
-                        styleName="md-gutter-bottom bold"
-                        style={{ fontSize: 25 }}
-                     >
-                        {stores.name}
-                     </Title>
-                     <Subtitle
-                        styleName="sm-gutter-horizontal bold"
-                        style={{ fontSize: 15 }}
-                     >
-                        {stores.address}
-                     </Subtitle>
-                  </Tile> */}
                   <View
                      style={{
                         flex: 1,

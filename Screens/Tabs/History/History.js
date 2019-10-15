@@ -16,11 +16,9 @@ import {
    Title,
    Subtitle,
    Icon,
-   Image,
    Divider,
    DropDownMenu,
-   Row,
-   Text
+   Row
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
 import GradientButton from "react-native-gradient-buttons";
@@ -30,8 +28,7 @@ import { BarIndicator } from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
 import {
-   HISTORY_LIST_ENDPOINT,
-   USER_STORE_ENDPOINT
+   HISTORY_LIST_ENDPOINT
 } from "../../../api/endpoint";
 
 class History extends Component {
