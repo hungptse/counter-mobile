@@ -1,5 +1,9 @@
 Arguments: 
+<<<<<<< HEAD
+  D:\NodeJS\node.exe D:\Yarn\bin\yarn.js add react-native-picker-select
+=======
   C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-image-picke
+>>>>>>> 04ac2a197d4f824030a9cf782a3cf7df7fc6633d
 
 PATH: 
   C:\Program Files\PowerShell\7-preview\preview;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;C:\Users\Hashes\AppData\Local\Android\Sdk\platform-tools;X:\Program Files\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program Files (x86)\Yarn\bin\;;C:\Users\Hashes\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Hashes\AppData\Roaming\npm;C:\Users\Hashes\AppData\Local\Yarn\bin
@@ -14,6 +18,9 @@ Platform:
   win32 x64
 
 Trace: 
+<<<<<<< HEAD
+  Error: EPERM: operation not permitted, unlink 'D:\counter-mobile\node_modules\@expo\xdl\binaries\windows\adb\AdbWinUsbApi.dll'
+=======
   Error: https://registry.yarnpkg.com/react-native-image-picke: Not found
       at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:65939:18)
       at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140464:22)
@@ -25,6 +32,7 @@ Trace:
       at IncomingMessage.emit (events.js:214:15)
       at endReadableNT (_stream_readable.js:1178:12)
       at processTicksAndRejections (internal/process/task_queues.js:80:21)
+>>>>>>> 04ac2a197d4f824030a9cf782a3cf7df7fc6633d
 
 npm manifest: 
   {
