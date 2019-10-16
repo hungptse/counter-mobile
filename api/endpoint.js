@@ -13,3 +13,13 @@ export const USER_STORE_ENDPOINT = `${BASE_URL}/user_store`;
 export const GET_COUNTER_BY_TYPE_STORE_ID = `${BASE_URL}/counter/store_type`;
 export const GET_USER_STORE_BY_USER_ID = `${BASE_URL}/user_store/user_id`;
 export const GET_COUNTER_TIME_BY_TIME = `${BASE_URL}/counter_time/max`;
+
+export const CURRENT_INVOICE_ENDPOINT = `${BASE_URL}/invoice/current`;
+export const ADD_INVOICE_ENDPOINT = `${BASE_URL}/invoice`;
+
+export const GET_ACTIVE_PRICE_LIST_ENDPOINT = `${BASE_URL}/active_price_list/active`;
+
+export const GET_COUNTER_TYPE = `${BASE_URL}/counter_type`;
+
+export const GET_PRICE_DETAIL = `${BASE_URL}/price_detail/detail`;
+

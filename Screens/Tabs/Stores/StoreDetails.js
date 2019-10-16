@@ -6,26 +6,101 @@ import {
    StatusBar,
    ScrollView,
    ImageBackground,
-   Image
+   Image,
+   ActivityIndicator,
+   BackHandler
 } from "react-native";
 import { NavigationBar, Title, Icon, Subtitle } from "@shoutem/ui";
 import GradientButton from "react-native-gradient-buttons";
 import NavigationService from "../../../services/navigate";
 import TimeAgo from "react-native-timeago";
 import VectorIcon from "react-native-vector-icons/Ionicons";
+import { POST } from "../../../api/caller";
+import { CURRENT_INVOICE_ENDPOINT } from "../../../api/endpoint";
 
 class StoreDetails extends Component {
    constructor(props) {
       super(props);
    }
-   state = { store: {} };
-   componentDidMount() {
-      this.setState({ store: this.props.navigation.getParam("storeInf") });
+   state = {
+      store: {},
+      invoices: [],
+      electricityInvoice: {},
+      waterInvoice: {},
+      currentTime: "",
+      invoiceLoaded: false
+   };
+   goBack = () => {
+      this.props.navigation.goBack();
+      return true;
+   };
+   componentWillMount() {
+      BackHandler.addEventListener("hardwareBackPress", this.goBack);
+   }
+   componentWillUnmount() {
+      BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+   }
+
+   async componentDidMount() {
+      let store = await this.props.navigation.getParam("storeInf");
+      this.setState({
+         store: store
+      });
+      await POST(
+         CURRENT_INVOICE_ENDPOINT,
+         {},
+         {},
+         {
+            store_id: this.state.store.id
+         }
+      ).then(async res => {
+         if (res.status == 200) {
+            this.setState({ invoices: res.data.invoices });
+            if (this.state.invoices.length > 0) {
+               this.state.invoices.forEach(i => {
+                  if (i.type_name == "Water") {
+                     this.setState({ waterInvoice: i });
+                  }
+                  if (i.type_name == "Electricity") {
+                     this.setState({ electricityInvoice: i });
+                  }
+               });
+            }
+         }
+         setTimeout(() => {
+            this.setState({ invoiceLoaded: true });
+         }, 500);
+      });
+      let month = [
+         "Jan",
+         "Feb",
+         "Mar",
+         "Apr",
+         "May",
+         "Jun",
+         "Jul",
+         "Aug",
+         "Sep",
+         "Oct",
+         "Nov",
+         "Dec"
+      ];
+      let lastMonth = new Date();
+      lastMonth.setMonth(lastMonth.getMonth() - 1);
+      let currentTime =
+         month[lastMonth.getMonth()] + " " + lastMonth.getFullYear();
+      this.setState({ currentTime: currentTime });
    }
 
    render() {
-      const { navigate } = this.props.navigation;
-      const { store } = this.state;
+      const {
+         store,
+         electricityInvoice,
+         waterInvoice,
+         currentTime,
+         invoiceLoaded
+      } = this.state;
+
       return (
          <View style={styles.container}>
             <View style={styles.navigation}>
@@ -83,7 +158,9 @@ class StoreDetails extends Component {
                            <Icon name="address" style={styles.detailIcons} />
                            <View>
                               <Text style={styles.detailTitles}>Address</Text>
-                              <Text>{store.address}</Text>
+                              <Text>
+                                 {store.address} {store.id}
+                              </Text>
                            </View>
                         </View>
                         <View style={styles.detailRows}>
@@ -111,7 +188,6 @@ class StoreDetails extends Component {
                               justifyContent: "center"
                            }}
                         >
-                           {/* <VectorIcon name="ios-card" size={47} color="#737373" /> */}
                            <Image
                               style={{ height: 90, width: 90 }}
                               source={{
@@ -120,26 +196,50 @@ class StoreDetails extends Component {
                               }}
                            />
                         </View>
-                        <View style={{ flex: 3, marginLeft: 15, marginTop: 7 }}>
-                           <Text style={{ fontSize: 30 }}>
-                              <VectorIcon
-                                 name="ios-flash"
-                                 size={20}
+                        {invoiceLoaded != true ? (
+                           <View
+                              style={{
+                                 flex: 3,
+                                 marginLeft: 15,
+                                 marginTop: 7,
+                                 alignItems: "center",
+                                 justifyContent: "center"
+                              }}
+                           >
+                              <ActivityIndicator
+                                 size="large"
                                  color="#00365d"
-                              />{" "}
-                              11.217.000 đ
-                           </Text>
-                           <Text style={{ fontSize: 30, marginBottom: 10 }}>
-                              <VectorIcon
-                                 name="ios-water"
-                                 size={20}
-                                 color="#00365d"
-                              />{" "}
-                              6.456.000 đ
-                           </Text>
-                           <Text>Money on current Invoice</Text>
-                           <Text>Time: 10/2019</Text>
-                        </View>
+                                 style={{ flex: 1 }}
+                              />
+                           </View>
+                        ) : (
+                           <View
+                              style={{ flex: 3, marginLeft: 15, marginTop: 7 }}
+                           >
+                              <Text style={{ fontSize: 30 }}>
+                                 <VectorIcon
+                                    name="ios-flash"
+                                    size={25}
+                                    color="#00365d"
+                                 />{" "}
+                                 {electricityInvoice.price
+                                    ? electricityInvoice.price + "đ"
+                                    : "..."}
+                              </Text>
+                              <Text style={{ fontSize: 30, marginBottom: 10 }}>
+                                 <VectorIcon
+                                    name="ios-water"
+                                    size={20}
+                                    color="#00365d"
+                                 />{" "}
+                                 {waterInvoice.price
+                                    ? waterInvoice.price + "đ"
+                                    : "..."}
+                              </Text>
+                              <Text>Last month's invoice</Text>
+                              <Text>Time: {currentTime}</Text>
+                           </View>
+                        )}
                      </View>
                   </View>
                </ScrollView>
@@ -151,7 +251,23 @@ class StoreDetails extends Component {
                      height="100%"
                      deepBlue
                      onPressAction={() =>
-                        NavigationService.navigate("PriceTable")
+                        NavigationService.navigate("PriceTable", {
+                           store: store
+                        })
+                     }
+                  />
+               </View>
+               <View style={styles.invoiceButton}>
+                  <GradientButton
+                     radius={60}
+                     text={<VectorIcon name="md-add" size={27} />}
+                     width="100%"
+                     height="100%"
+                     deepBlue
+                     onPressAction={() =>
+                        NavigationService.navigate("AddInvoice", {
+                           store: store
+                        })
                      }
                   />
                </View>
@@ -234,7 +350,14 @@ const styles = StyleSheet.create({
       width: 60,
       height: 60,
       position: "absolute",
-      bottom: 60,
-      right: 10
+      bottom: 30,
+      right: 35
+   },
+   invoiceButton: {
+      width: 60,
+      height: 60,
+      position: "absolute",
+      bottom: 105,
+      right: 35
    }
 });

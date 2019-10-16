@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { TextInput } from "react-native-gesture-handler";
-import GradientButton from 'react-native-gradient-buttons';
+import GradientButton from "react-native-gradient-buttons";
 // import DropdownAlert from 'react-native-dropdownalert';
 import {
 	GET_USER_ENDPOINT,
@@ -36,7 +36,7 @@ import {
 	Button
 } from "@shoutem/ui";
 import NavigationService from "../../../services/navigate";
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { POST } from "../../../api/caller";
 import { CREATE_COUNTER_TIME } from "../../../api/endpoint";
