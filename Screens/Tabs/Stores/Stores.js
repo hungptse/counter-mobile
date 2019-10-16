@@ -11,8 +11,7 @@ import {
    SafeAreaView,
    ImageBackground,
    Keyboard,
-   BackHandler,
-   ToastAndroid
+   BackHandler
 } from "react-native";
 import {
    NavigationBar,
@@ -29,7 +28,6 @@ import { BarIndicator } from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
 import { STORE_LIST_ENDPOINT } from "../../../api/endpoint";
-import { hidden } from "ansi-colors";
 
 const randomImage = [
    "https://image.freepik.com/free-vector/abstract-technology-concept-design-with-wire-mesh_1017-14624.jpg",
@@ -59,35 +57,11 @@ class Stores extends Component {
       this.renderRow = this.renderRow.bind(this);
    }
 
-   handleBackButton = () => {
-      if (!this.state.confirmExit) {
-         ToastAndroid.showWithGravityAndOffset(
-            "Tap again to exit!",
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50
-         );
-         this.setState({ confirmExit: true })
-         return true;
-      } else {
-         BackHandler.exitApp();
-      }
-   };
-
    async componentDidMount() {
       this.setState({ selectedFilter: this.state.filters[0] });
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
-
-      this.backHandler = BackHandler.addEventListener(
-         "hardwareBackPress",
-         this.handleBackButton
-      );
-   }
-   componentWillUnmount() {
-      this.backHandler.remove();
    }
 
    async callAPI() {
@@ -120,11 +94,11 @@ class Stores extends Component {
          <View style={styles.row}>
             <TouchableOpacity
                activeOpacity={0.7}
-               onPress={() =>
+               onPress={() => {
                   NavigationService.navigate("StoreDetails", {
                      storeInf: stores
-                  })
-               }
+                  });
+               }}
             >
                <ImageBackground
                   style={{ width: "100%", height: "100%" }}
@@ -203,39 +177,46 @@ class Stores extends Component {
                   Platform.OS == "ios" ? "dark-content" : "light-content"
                }
             />
-            <NavigationBar
-               styleName="inline"
-               leftComponent={
-                  <TextInput
-                     placeholder={"Stores list"}
-                     style={{ width: "150%" }}
-                     onChangeText={this.handleSearch}
-                     value={this.state.search}
-                  />
-               }
-               rightComponent={
-                  <DropDownMenu
-                     options={this.state.filters}
-                     selectedOption={this.state.selectedFilter}
-                     onOptionSelected={filter => {
-                        this.setState({ selectedFilter: filter });
-                        if (filter.value === "ALL") {
+            <View
+               style={{ borderBottomColor: "#d7d7d7", borderBottomWidth: 1 }}
+            >
+               <NavigationBar
+                  styleName="inline"
+                  leftComponent={
+                     <TextInput
+                        placeholder={"Search a store..."}
+                        style={{ width: "150%" }}
+                        onChangeText={this.handleSearch}
+                        value={this.state.search}
+                     />
+                  }
+                  rightComponent={
+                     <DropDownMenu
+                        options={this.state.filters}
+                        selectedOption={this.state.selectedFilter}
+                        onOptionSelected={filter => {
                            this.setState({
-                              selectedStore: this.state.stores
+                              search: "",
+                              selectedFilter: filter
                            });
-                        } else {
-                           this.setState({
-                              selectedStore: this.state.stores.filter(
-                                 s => s.city === filter.value
-                              )
-                           });
-                        }
-                     }}
-                     titleProperty="name"
-                     valueProperty="value"
-                  />
-               }
-            />
+                           if (filter.value === "ALL") {
+                              this.setState({
+                                 selectedStore: this.state.stores
+                              });
+                           } else {
+                              this.setState({
+                                 selectedStore: this.state.stores.filter(
+                                    s => s.city === filter.value
+                                 )
+                              });
+                           }
+                        }}
+                        titleProperty="name"
+                        valueProperty="value"
+                     />
+                  }
+               />
+            </View>
             <SafeAreaView>
                <ScrollView
                   contentContainerStyle={{

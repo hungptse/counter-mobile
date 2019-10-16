@@ -4,7 +4,7 @@ import {
    StatusBar,
    StyleSheet,
    Platform,
-   TouchableOpacity
+   BackHandler
 } from "react-native";
 import {
    NavigationBar,
@@ -34,8 +34,19 @@ class HistoryDetail extends Component {
       super(props);
    }
 
+   goBack = () => {
+      this.props.navigation.goBack();
+      return true;
+   };
+   componentWillMount() {
+      BackHandler.addEventListener("hardwareBackPress", this.goBack);
+   }
+   componentWillUnmount() {
+      BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+   }
+
    componentDidMount() {
-      this.setState({ history: this.props.navigation.getParam("history") });   
+      this.setState({ history: this.props.navigation.getParam("history") });
    }
    render() {
       const { history } = this.state;
@@ -54,7 +65,7 @@ class HistoryDetail extends Component {
                   <Icon
                      name="left-arrow"
                      style={{ fontSize: 35 }}
-                     onPress={() => NavigationService.navigate("History")}
+                     onPress={() => NavigationService.navigate("Dashboard")}
                   />
                }
                centerComponent={<Title>RECORD DETAILS</Title>}
@@ -86,7 +97,9 @@ class HistoryDetail extends Component {
                   <Caption>Address: {history.in_store.address}</Caption>
                </Row>
                <Row styleName="small" style={{ height: 30 }}>
-                  <Caption>Time: <TimeAgo time={history.createdAt} /></Caption>
+                  <Caption>
+                     Time: <TimeAgo time={history.createdAt} />
+                  </Caption>
                </Row>
                <Row styleName="small" style={{ height: 40 }}>
                   <Icon name="add-to-favorites-off" />

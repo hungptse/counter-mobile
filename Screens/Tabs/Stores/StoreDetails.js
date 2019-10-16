@@ -7,7 +7,8 @@ import {
    ScrollView,
    ImageBackground,
    Image,
-   ActivityIndicator
+   ActivityIndicator,
+   BackHandler
 } from "react-native";
 import { NavigationBar, Title, Icon, Subtitle } from "@shoutem/ui";
 import GradientButton from "react-native-gradient-buttons";
@@ -29,6 +30,16 @@ class StoreDetails extends Component {
       currentTime: "",
       invoiceLoaded: false
    };
+   goBack = () => {
+      this.props.navigation.goBack();
+      return true;
+   };
+   componentWillMount() {
+      BackHandler.addEventListener("hardwareBackPress", this.goBack);
+   }
+   componentWillUnmount() {
+      BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+   }
 
    async componentDidMount() {
       let store = await this.props.navigation.getParam("storeInf");
@@ -246,6 +257,20 @@ class StoreDetails extends Component {
                      }
                   />
                </View>
+               <View style={styles.invoiceButton}>
+                  <GradientButton
+                     radius={60}
+                     text={<VectorIcon name="md-add" size={27} />}
+                     width="100%"
+                     height="100%"
+                     deepBlue
+                     onPressAction={() =>
+                        NavigationService.navigate("AddInvoice", {
+                           store: store
+                        })
+                     }
+                  />
+               </View>
             </View>
          </View>
       );
@@ -325,7 +350,14 @@ const styles = StyleSheet.create({
       width: 60,
       height: 60,
       position: "absolute",
-      bottom: 160,
-      right: 10
+      bottom: 30,
+      right: 35
+   },
+   invoiceButton: {
+      width: 60,
+      height: 60,
+      position: "absolute",
+      bottom: 105,
+      right: 35
    }
 });

@@ -7,21 +7,19 @@ import Login from "./Screens/Login";
 import Dashboard from "./Screens/Dashboard";
 import EditProfile from "./Screens/Tabs/Profile/EditProfile";
 import Profile from "./Screens/Tabs/Profile/Profile";
-import NavigationService from './services/navigate';
-import registerForPushNotificationsAsync from './services/notification'
-import PriceTable from "./Screens/Tabs/Stores/PriceTable"
-import {
-   Notifications,
-} from 'expo';
+import NavigationService from "./services/navigate";
+import registerForPushNotificationsAsync from "./services/notification";
+import PriceTable from "./Screens/Tabs/Stores/PriceTable";
+import { Notifications } from "expo";
 // Stores
-import StoreDetails from './Screens/Tabs/Stores/StoreDetails';
-
+import StoreDetails from "./Screens/Tabs/Stores/StoreDetails";
+import AddInvoice from "./Screens/Tabs/Stores/AddInvoice";
+import InvoiceImagePicker from "./Screens/Tabs/Stores/InvoiceImagePicker";
 // History
-import HistoryDetails from './Screens/Tabs/History/HistoryDetails';
-import AddRecord from './Screens/Tabs/History/AddRecord';
+import HistoryDetails from "./Screens/Tabs/History/HistoryDetails";
+import AddRecord from "./Screens/Tabs/History/AddRecord";
 
 // Profile
-
 
 // Settings
 import ChangePassword from "./Screens/Tabs/Settings/ChangePassword";
@@ -31,8 +29,6 @@ import ChangePassword from "./Screens/Tabs/Settings/ChangePassword";
 
 const Container = createStackNavigator(
    {
-    
-
       Login: {
          screen: Login,
          navigationOptions: {
@@ -55,13 +51,27 @@ const Container = createStackNavigator(
             gesturesEnabled: false
          }
       },
-      PriceTable:{
-        screen: PriceTable,
-        navigationOptions: {
-           header: null,
-           gesturesEnabled: false
-        }
-    },
+      PriceTable: {
+         screen: PriceTable,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      },
+      AddInvoice: {
+         screen: AddInvoice,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      },
+      InvoiceImagePicker: {
+         screen: InvoiceImagePicker,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      },
       // History
       HistoryDetails: {
          screen: HistoryDetails,
@@ -81,13 +91,13 @@ const Container = createStackNavigator(
       Profile: {
          screen: Profile,
          navigationOptions: {
-            header: null,
+            header: null
          }
       },
       EditProfile: {
          screen: EditProfile,
          navigationOptions: {
-            header: null,
+            header: null
          }
       },
       // Settings
@@ -100,7 +110,7 @@ const Container = createStackNavigator(
       }
    },
    {
-      initialRouteName: "Login",
+      initialRouteName: "Login"
    }
 );
 const AppContainer = createAppContainer(Container);
@@ -127,18 +137,19 @@ export default class App extends Component {
          "rubicon-icon-font": require("./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf")
       });
       registerForPushNotificationsAsync();
-      this._notificationSubscription = Notifications.addListener(this._handleNotification);
+      this._notificationSubscription = Notifications.addListener(
+         this._handleNotification
+      );
       this.setState({ fontsAreLoaded: true });
-      if (Platform.OS === 'android') {
-         Notifications.createChannelAndroidAsync('counter-android', {
-            name: 'Counter',
-            priority: 'max',
+      if (Platform.OS === "android") {
+         Notifications.createChannelAndroidAsync("counter-android", {
+            name: "Counter",
+            priority: "max",
             vibrate: [0, 250, 250, 250],
             sound: true
          });
       }
    }
-   
 
    // _createNotificationAsync = () => {
    //    Notifications.presentLocalNotificationAsync({
@@ -150,12 +161,12 @@ export default class App extends Component {
    //    });
    // }
 
-   _handleNotification = (notification) => {
+   _handleNotification = notification => {
       this.setState({ notification: notification });
    };
 
    render() {
-      const { notification } = this.state
+      const { notification } = this.state;
       if (!this.state.fontsAreLoaded) {
          return (
             <View style={{ flex: 1 }}>
@@ -179,12 +190,11 @@ export default class App extends Component {
                ref={navigatorRef => {
                   NavigationService.setTopLevelNavigator(navigatorRef);
                }}
-            // ref={nav => {
-            //    this.navigator = nav;
-            // }}
+               // ref={nav => {
+               //    this.navigator = nav;
+               // }}
             />
          </>
       );
    }
 }
-

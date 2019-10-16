@@ -5,7 +5,8 @@ import {
    StyleSheet,
    Platform,
    ScrollView,
-   StatusBar
+   StatusBar,
+   BackHandler
 } from "react-native";
 import { NavigationBar, Title, Icon, Subtitle } from "@shoutem/ui";
 import VectorIcon from "react-native-vector-icons/Ionicons";
@@ -28,6 +29,34 @@ export default class PriceTable extends Component {
       super(props);
    }
 
+   componentWillMount() {
+      let date = new Date();
+      let month = [
+         "Jan",
+         "Feb",
+         "Mar",
+         "Apr",
+         "May",
+         "Jun",
+         "Jul",
+         "Aug",
+         "Sep",
+         "Oct",
+         "Nov",
+         "Dec"
+      ];
+      let currentTime = month[date.getMonth()] + " " + date.getFullYear();
+      this.setState({ currentTime: currentTime });
+
+      BackHandler.addEventListener("hardwareBackPress", this.goBack);
+   }
+   goBack = () => {
+      this.props.navigation.goBack();
+      return true;
+   };
+   componentWillUnmount() {
+      BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+   }
    async componentDidMount() {
       let store = this.props.navigation.getParam("store");
       this.setState({ store: store });
@@ -48,44 +77,37 @@ export default class PriceTable extends Component {
                {
                   plist_id: res.data.active_price_list.plist_id
                }
-            ).then(detail => {
+            ).then(async detail => {
                if (detail.status == 200) {
-                  const prices = detail.data.price_details;
+                  const prices = await detail.data.price_details;
+                  const electricity = prices.filter(
+                     p => p.type_name == "Electricity"
+                  );
+                  const water = await prices.filter(
+                     p => p.type_name == "Water"
+                  );
                   this.setState({
-                     electricityPrice: prices.filter(
-                        p => p.type_name == "Electricity"
-                     )
+                     electricityPrice: electricity
                   });
                   this.setState({
-                     waterPrice: prices.filter(p => p.type_name == "Water")
+                     waterPrice: water
                   });
                }
             });
          }
       });
-
-      let date = new Date();
-      let month = [
-         "Jan",
-         "Feb",
-         "Mar",
-         "Apr",
-         "May",
-         "Jun",
-         "Jul",
-         "Aug",
-         "Sep",
-         "Oct",
-         "Nov",
-         "Dec"
-      ];
-      let currentTime = month[date.getMonth()] + " " + date.getFullYear();
-      this.setState({ currentTime: currentTime });
    }
 
-   render() {
-      const { store, currentTime, electricityPrice } = this.state;
+   findEPrice = (v, t) => {
+      const e = this.state.electricityPrice;
+      const p = e.filter(i => i.voltage_level == v && i.time_type == t)[0];
+      if (p != undefined) {
+         return <Text style={styles.headerText}>{p.price}</Text>
+      }
+   };
 
+   render() {
+      const { store, currentTime, waterPrice } = this.state;
       return (
          <View style={styles.container}>
             <View style={styles.navigation}>
@@ -135,7 +157,7 @@ export default class PriceTable extends Component {
                   </View>
                </View>
                <View style={{ alignItems: "center", marginTop: 10 }}>
-                  <Subtitle style={{ fontSize: 20 }}>Electricity</Subtitle>
+                  <Subtitle style={{ fontSize: 20 }}>Electricity (đ)</Subtitle>
                </View>
                <View style={styles.body}>
                   <View style={styles.header}>
@@ -166,23 +188,34 @@ export default class PriceTable extends Component {
                   </View>
                   <View style={styles.row}>
                      <Text style={styles.headerText1}>{"<"} 6 kV</Text>
-                     
+                     {this.findEPrice(1, "TD") ? this.findEPrice(1, "TD") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(1, "BT") ? this.findEPrice(1, "BT") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(1, "CD") ? this.findEPrice(1, "CD") : <Text style={styles.headerText}>...</Text>}
                   </View>
                   <View style={styles.row}>
                      <Text style={styles.headerText1}>6 ~ 22 kV</Text>
-                     {/* {renderRowTableElectric(2, "TD")} */}
-                     {/* {renderRowTableElectric(2, "BT")}
-                     {renderRowTableElectric(2, "CD")} */}
+                     {this.findEPrice(2, "TD") ? this.findEPrice(2, "TD") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(2, "BT") ? this.findEPrice(2, "BT") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(2, "CD") ? this.findEPrice(2, "CD") : <Text style={styles.headerText}>...</Text>}
                   </View>
                   <View style={styles.row}>
                      <Text style={styles.headerText1}>> 22 kV</Text>
-                     {/* {renderRowTableElectric(3, "TD")}
-                     {renderRowTableElectric(3, "BT")}
-                     {renderRowTableElectric(3, "CD")} */}
+                     {this.findEPrice(3, "TD") ? this.findEPrice(3, "TD") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(3, "BT") ? this.findEPrice(3, "BT") : <Text style={styles.headerText}>...</Text>}
+                     {this.findEPrice(3, "CD") ? this.findEPrice(3, "CD") : <Text style={styles.headerText}>...</Text>}
                   </View>
                </View>
                <View style={{ alignItems: "center", marginTop: 20 }}>
-                  <Subtitle style={{ fontSize: 20 }}>Water</Subtitle>
+                  <Subtitle style={{ fontSize: 20, marginBottom: 25 }}>
+                     Water (đ)
+                  </Subtitle>
+                  <Text style={styles.headerText}>
+                     The current water price is
+                     <Text style={{ fontWeight: "bold" }}>
+                        {" "}
+                        {waterPrice[0] ? waterPrice[0].price : "..."} /m&#179;{" "}
+                     </Text>
+                  </Text>
                </View>
             </ScrollView>
          </View>

@@ -27,9 +27,7 @@ import TimeAgo from "react-native-timeago";
 import { BarIndicator } from "react-native-indicators";
 
 import { GET } from "../../../api/caller";
-import {
-   HISTORY_LIST_ENDPOINT
-} from "../../../api/endpoint";
+import { HISTORY_LIST_ENDPOINT } from "../../../api/endpoint";
 
 class History extends Component {
    state = {
@@ -40,18 +38,18 @@ class History extends Component {
          { name: "Electricity", value: "Electricity" },
          { name: "Water", value: "Water" }
       ],
-      selectedFilter : {},
+      selectedFilter: {},
       refreshing: false
    };
 
    constructor(props) {
       super(props);
-      
+
       this.renderRow = this.renderRow.bind(this);
    }
 
    async componentDidMount() {
-      this.setState({selectedFilter : this.state.filters[0]})
+      this.setState({ selectedFilter: this.state.filters[0] });
 
       this.setState({ refreshing: true });
       await this.callAPI();
@@ -88,7 +86,7 @@ class History extends Component {
                <Divider />
             </View>
             <Row styleName="small">
-            <VectorIcon
+               <VectorIcon
                   name={
                      history.counter_type === "Electricity"
                         ? "ios-flash"
@@ -101,18 +99,23 @@ class History extends Component {
                   styleName="vertical"
                   style={{ marginLeft: 15, paddingTop: 5 }}
                >
-                  <Subtitle>Recorded <TimeAgo time={history.createdAt} /> by {history.created_by_name}</Subtitle>
-                  <Caption>
-                     at {history.in_store.name}
-                  </Caption>
+                  <Subtitle>
+                     Recorded <TimeAgo time={history.createdAt} /> by{" "}
+                     {history.created_by_name}
+                  </Subtitle>
+                  <Caption>at {history.in_store.name}</Caption>
                </View>
-               <Icon styleName="disclosure" name="right-arrow" style={{ position: 'absolute', right: 15 }}/>               
+               <Icon
+                  styleName="disclosure"
+                  name="right-arrow"
+                  style={{ position: "absolute", right: 15 }}
+               />
             </Row>
          </TouchableOpacity>
       );
    }
    onRefresh = async () => {
-      this.setState({selectedFilter : this.state.filters[0]})
+      this.setState({ selectedFilter: this.state.filters[0] });
       this.setState({ refreshing: true });
       await this.callAPI();
       this.setState({ refreshing: false });
@@ -129,66 +132,76 @@ class History extends Component {
                   Platform.OS == "ios" ? "dark-content" : "light-content"
                }
             />
-            <NavigationBar
-               styleName="inline"
-               leftComponent={
-                  <Title style={{ paddingLeft: 20 }}>Records list</Title>
-               }
-               rightComponent={
-                  <DropDownMenu
-                     options={this.state.filters}
-                     selectedOption={
-                        this.state.selectedFilter
-                     }
-                     onOptionSelected={filter => {
-                        this.setState({ selectedFilter: filter });
-                        if (filter.value === "ALL") {
-                           this.setState({
-                              selectedHistory: this.state.history
-                           });
-                        } else {
-                           this.setState({
-                              selectedHistory: this.state.history.filter(
-                                 h => h.counter_type === filter.value
-                              )
-                           });
-                        }
-                     }}
-                     titleProperty="name"
-                     valueProperty="value"
-                  />
-               }
-            />
-            <SafeAreaView>
-            <ScrollView
-               contentContainerStyle={{
-                  flex: 1,
-                  justifyContent: "space-between"
-               }}
-               refreshControl={
-                  <RefreshControl
-                     refreshing={refreshing}
-                     onRefresh={this.onRefresh}
-                  />
-               }
-            >
-               {refreshing ? (
-                  <View style={{ flex: 1 }}>
-                     <BarIndicator
-                        style={{flex : 1, marginTop : "60%", paddingBottom : "20%" }}
-                        size={50}
-                        color="#00365d"
-                        hidesWhenStopped={false}
-                        animating={true}
-                        interaction={false}
-                        count={5}
+            <View style={{ borderBottomColor: "#d7d7d7", borderBottomWidth: 1 }}>
+               <NavigationBar
+                  styleName="inline"
+                  leftComponent={
+                     <Title style={{ paddingLeft: 20 }}>Records list</Title>
+                  }
+                  rightComponent={
+                     <DropDownMenu
+                        options={this.state.filters}
+                        selectedOption={this.state.selectedFilter}
+                        onOptionSelected={filter => {
+                           this.setState({ selectedFilter: filter });
+                           if (filter.value === "ALL") {
+                              this.setState({
+                                 selectedHistory: this.state.history
+                              });
+                           } else {
+                              this.setState({
+                                 selectedHistory: this.state.history.filter(
+                                    h => h.counter_type === filter.value
+                                 )
+                              });
+                           }
+                        }}
+                        titleProperty="name"
+                        valueProperty="value"
                      />
-                  </View>
-               ) : (
-                  <ListView data={selectedHistory} renderRow={this.renderRow} />
-               )}
-            </ScrollView>
-            </SafeAreaView>
+                  }
+               />
+            </View>
+
+            <View style={{ height: "100%", backgroundColor: "#f3f3f3" }}>
+               <SafeAreaView>
+                  <ScrollView
+                     contentContainerStyle={{
+                        flex: 1,
+                        justifyContent: "space-between"
+                     }}
+                     refreshControl={
+                        <RefreshControl
+                           refreshing={refreshing}
+                           onRefresh={this.onRefresh}
+                        />
+                     }
+                  >
+                     {refreshing ? (
+                        <View style={{ flex: 1 }}>
+                           <BarIndicator
+                              style={{
+                                 flex: 1,
+                                 marginTop: "60%",
+                                 paddingBottom: "20%"
+                              }}
+                              size={50}
+                              color="#00365d"
+                              hidesWhenStopped={false}
+                              animating={true}
+                              interaction={false}
+                              count={5}
+                           />
+                        </View>
+                     ) : (
+                        <ListView
+                           data={selectedHistory}
+                           renderRow={this.renderRow}
+                        />
+                     )}
+                  </ScrollView>
+               </SafeAreaView>
+            </View>
             <View style={styles.addNewButton}>
                <GradientButton
                   radius={60}
