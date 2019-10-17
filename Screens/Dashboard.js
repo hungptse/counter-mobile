@@ -18,7 +18,6 @@ class Dashboard extends React.Component {
          [
             {
                text: "Cancel",
-               onPress: () => console.log("Cancel Pressed"),
                style: "cancel"
             },
             {
@@ -27,7 +26,7 @@ class Dashboard extends React.Component {
             }
          ],
          {
-            cancelable: false
+            cancelable: true
          }
       );
       return true;
