@@ -100,13 +100,7 @@ class Settings extends Component {
                <View style={{ height: 15 }}>
                   <Divider />
                </View>
-               <Row styleName="small">
-                  <Icon name="notifications" style={{ color: "#00365d" }} />
-                  <Text style={{ color: "#00365d" }}>Notifications</Text>
-               </Row>
-               <View style={{ height: 15 }}>
-                  <Divider />
-               </View>
+               
                {/* <TouchableOpacity onPress={() => NavigationService.navigate("Login")}> */}
                <TouchableOpacity onPress={confirmLogOut}>
                   <Row styleName="small">

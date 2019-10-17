@@ -13,7 +13,7 @@ import {
 import { Caption, Icon, Divider, Row, Subtitle } from "@shoutem/ui";
 import GradientButton from "react-native-gradient-buttons";
 
-import { POST } from "../../../api/caller";
+import { POST, UPLOAD } from "../../../api/caller";
 import {
    ADD_INVOICE_ENDPOINT
 } from "../../../api/endpoint";
@@ -90,7 +90,8 @@ class AddInvoice extends Component {
          await POST(ADD_INVOICE_ENDPOINT, {}, {}, {
             store_id: store.id,
             type_id: invoiceType,
-            price: invoicePrice
+            price: invoicePrice,
+            // snap_image: photo
          }).then(async res => {
             if (res.status == 200){
                this.dropDownAlertRef.alertWithType(
