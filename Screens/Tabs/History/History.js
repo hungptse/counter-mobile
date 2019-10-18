@@ -7,7 +7,8 @@ import {
    Platform,
    TouchableOpacity,
    RefreshControl,
-   ScrollView
+   ScrollView,
+   Text
 } from "react-native";
 import {
    NavigationBar,
@@ -99,9 +100,9 @@ class History extends Component {
                   styleName="vertical"
                   style={{ marginLeft: 15, paddingTop: 5 }}
                >
-                  <Subtitle>
-                     Recorded <TimeAgo time={history.createdAt} /> by{" "}
-                     {history.created_by_name}
+                  <Subtitle style={{ fontSize: 15 }}>
+                     {history.created_by_name} -{" "}
+                     <TimeAgo time={history.createdAt} />
                   </Subtitle>
                   <Caption>at {history.in_store.name}</Caption>
                </View>
@@ -122,7 +123,15 @@ class History extends Component {
    };
    render() {
       const { selectedHistory, refreshing } = this.state;
-
+      if (selectedHistory.length > 0) {
+         selectedHistory.sort((a, b) => {
+            return a.createdAt > b.createdAt
+               ? -1
+               : a.createdAt < b.createdAt
+               ? 1
+               : 0;
+         });
+      }
       return (
          <View style={styles.navigation}>
             <StatusBar
@@ -132,11 +141,18 @@ class History extends Component {
                   Platform.OS == "ios" ? "dark-content" : "light-content"
                }
             />
-            <View style={{ borderBottomColor: "#d7d7d7", borderBottomWidth: 1 }}>
+            <View
+               style={{ borderBottomColor: "#d7d7d7", borderBottomWidth: 1 }}
+            >
                <NavigationBar
                   styleName="inline"
                   leftComponent={
                      <Title style={{ paddingLeft: 20 }}>Records list</Title>
+                  }
+                  centerComponent={
+                     <Subtitle style={{ marginLeft: 46.5 }}>
+                        Total: {selectedHistory.length}
+                     </Subtitle>
                   }
                   rightComponent={
                      <DropDownMenu
@@ -228,7 +244,7 @@ const styles = StyleSheet.create({
    navigation: {
       flex: 1,
       paddingTop: StatusBar.currentHeight,
-      paddingBottom: 55
+      paddingBottom: 66
    },
    addNewButton: {
       width: 60,

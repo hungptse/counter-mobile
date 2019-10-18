@@ -114,7 +114,7 @@ class ElectricityScreen extends React.Component {
          {},
          {
             store_id: this.state.store_id,
-            type_id: 2
+            type_id: 1
          }
       ).then(res => {
          if (res.status == 200) {
@@ -275,7 +275,7 @@ class WaterScreen extends React.Component {
          {},
          {
             store_id: this.state.store_id,
-            type_id: 1
+            type_id: 2
          }
       ).then(res => {
          if (res.status == 200) {
