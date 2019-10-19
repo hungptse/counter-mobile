@@ -1,30 +1,20 @@
 import React, { Component } from "react";
-import { Icon, ImageBackground, NavigationBar, Title } from "@shoutem/ui";
+import { Icon, ImageBackground, NavigationBar, Title, Subtitle } from "@shoutem/ui";
 import {
    StyleSheet,
    Platform,
    StatusBar,
    View,
    Text,
-   Image,
-   BackHandler
+   Image
 } from "react-native";
 import { GET_USER_ENDPOINT } from "../../../api/endpoint";
 import { GET } from "../../../api/caller";
 import NavigationService from "../../../services/navigate";
+import VectorIcon from "react-native-vector-icons/Ionicons";
 
 class Profile extends Component {
    state = { profile: {} };
-   // async componentDidMount() {
-   //     await GET(STORE_LIST_ENDPOINT, {}, {
-   //         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJpYXQiOjE1NjkzMjg5MzMsImV4cCI6MTU2OTQxNTMzM30.KCJEFI9UkbsfQxPJAIlZie2mNvJbQYSLS6tVa63OiEk"
-   //     }).then(res => res.json()).then(res => {
-   //         console.log(res);
-   //         this.setState({ stores: res.data.items })
-   //     }).catch(err => {
-   //         console.log(err);
-   //     })
-   // }
 
    async componentDidMount() {
       await GET(GET_USER_ENDPOINT, {}, {}).then(res => {
@@ -42,41 +32,14 @@ class Profile extends Component {
    render() {
       const { navigate } = this.props.navigation;
       const { profile } = this.state;
-      // var profile = {
-      //     name: 'Nguyen Thai Hoa',
-      //     store: 'Kha Van Can',
-      //     phone: '0123456789',
-      //     email: 'hula@gmail.com',
-      //     address: 'Quan 9, Ho Chi Minh'
-
-      // }
       return (
          <View style={styles.container}>
-            {/* <View style={styles.wrapIcon}>
-                    <Icon name={'address'} style={styles.icon} />
-                </View> */}
             <StatusBar
                translucent
                barStyle={
                   Platform.OS == "ios" ? "dark-content" : "light-content"
                }
             />
-            {/* <NavigationBar headerStyle={{
-                    backgroundColor: 'red',
-                }}
-                    styleName="clear"
-                    leftComponent={
-                        <Title style={{ paddingLeft: 20 }}>
-                            {this.state.selectedFilter
-                          ? this.state.selectedFilter.value
-                          : this.state.filters[0].value}
-                            Records list
-                    </Title>
-                    }
-                    rightComponent={
-                        <Text>h</Text>
-                    }
-                /> */}
             <View style={styles.header}>
                <ImageBackground
                   source={require("../../../assets/profile-wallpaper.jpg")}
@@ -89,17 +52,7 @@ class Profile extends Component {
                   }}
                >
                   <View style={styles.profile}>
-                     <Text
-                        style={styles.name}
-                        onPress={() =>
-                           NavigationService.navigate("EditProfile", {
-                              profileInf: profile
-                           })
-                        }
-                     >
-                        {profile.name}
-                        {/* <Icon name={'edit'}   style={{ color:'#00365d', marginLeft:10}} /> */}
-                     </Text>
+                     <Text style={styles.name}>{profile.name}</Text>
                      <Image
                         style={styles.avatar}
                         source={require("../../../assets/profile-avatar.jpg")}
@@ -108,19 +61,30 @@ class Profile extends Component {
                </ImageBackground>
             </View>
             <View style={styles.body}>
-               {/* <View style={styles.wrapIcon}>
-                        <Icon name={'address'} style={styles.icon} />
-                    </View> */}
+            <View style={{ alignItems: 'center' }}>
+               <Subtitle style={{ fontSize: 20 }}>User information</Subtitle>
+            </View>
                <View style={styles.address}>
-                  {/* <View style={styles.wrapIcon}>
-                        <Ionicons name={'ios-mail-outline'} size={35} color="black" />
-                        
-                            
-                        </View> */}
                   <Icon name={"address"} style={styles.icon} />
                   <View style={styles.profileText}>
-                     <Text style={styles.textProfile}>Address</Text>
-                     <Text>{profile.address}</Text>
+                     <View style={{ flexDirection: "row" }}>
+                        <View style={{ width: "65%" }}>
+                           <Text style={styles.textProfile}>Address</Text>
+                           <Text>{profile.address}</Text>
+                        </View>
+                        <View>
+                           <VectorIcon
+                              onPress={() =>
+                                 NavigationService.navigate("EditProfile", {
+                                    profileInf: profile
+                                 })
+                              }
+                              name={"ios-create"}
+                              size={20}
+                              style={styles.editIcon}
+                           />
+                        </View>
+                     </View>
                   </View>
                </View>
                <View style={styles.myProfile}>
@@ -159,21 +123,17 @@ const styles = StyleSheet.create({
    },
    body: {
       flex: 2,
-      paddingBottom: '5%',
+      paddingTop: "3%",
       backgroundColor: "#FFF"
    },
    header: {
       flex: 1
-
-      // backgroundColor: "rgba(83,80,158,0.3)",
    },
    name: {
-      fontSize: 25,
-      // flexDirection: 'column',
-      width: 0,
+      fontSize: 27,
       flexGrow: 1,
       height: 100,
-      marginLeft: 20,
+      marginLeft: 30,
       marginTop: 30,
       fontWeight: "bold",
       color: "#FFF",
@@ -186,27 +146,12 @@ const styles = StyleSheet.create({
       borderRadius: 55,
       borderColor: "#FFF",
       borderWidth: 4,
-      // marginBottom: 20,
-      marginRight: 8
-   },
-   editIcon: {
-      flex: 1,
-      // flexDirection: 'row',
-      // justifyContent:'flex-start'
-
-      marginBottom: 27,
-      marginLeft: 10
-      // aliContent: 'flex-start'
-
-      // justifyContent: 'space-between',
-      // marginTop: 35,
+      marginRight: 23
    },
    profile: {
       flex: 2,
       flexDirection: "row",
-      marginTop: 80
-      // paddingBottom: 40,
-      // alignItems: 'flex-start'
+      marginTop: 70
    },
    myProfile: {
       flex: 1,
@@ -235,15 +180,15 @@ const styles = StyleSheet.create({
       paddingTop: 2,
       borderColor: "rgba(83,80,158,0.1)"
    },
-   wrapIcon: {
-      shadowColor: "#000",
-      shadowOffset: {
-         width: 0,
-         height: 12
-      },
-      shadowOpacity: 0.58,
-      shadowRadius: 16.0,
-      elevation: 24
+   editIcon: {
+      marginRight: 45,
+      width: 30,
+      height: 30,
+      borderWidth: 2,
+      borderRadius: 10,
+      paddingLeft: 7,
+      paddingTop: 5,
+      borderColor: "rgba(83,80,158,0.1)"
    },
    navigation: {
       paddingTop: StatusBar.currentHeight

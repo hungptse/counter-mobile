@@ -82,24 +82,15 @@ class EditProfile extends Component {
                   <NavigationBar
                      styleName="inline"
                      leftComponent={
-                        <Title
-                           style={{ paddingLeft: 20 }}
+                        <Icon
+                           name="left-arrow"
+                           style={{ fontSize: 35 }}
                            onPress={() =>
                               NavigationService.navigate("Dashboard")
                            }
-                        >
-                           <Ionicons
-                              name={"ios-arrow-back"}
-                              size={30}
-                              style={styles.iconBack}
-                           />
-                        </Title>
+                        />
                      }
-                     centerComponent={
-                        <Title style={{ fontWeight: "bold" }}>
-                           EDIT PROFILE
-                        </Title>
-                     }
+                     centerComponent={<Title>EDIT PROFILE</Title>}
                   />
                </View>
                <ScrollView styles={{ flex: 1 }}>
@@ -210,13 +201,13 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: "center",
       flexDirection: "row",
-      marginTop: 20
+      marginTop: 30
    },
    address: {
       flex: 1,
       // marginTop: 30,
       flexDirection: "row",
-      marginTop: 15
+      marginTop: 35
    },
 
    profileText: {

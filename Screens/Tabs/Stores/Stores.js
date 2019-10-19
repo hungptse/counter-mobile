@@ -11,12 +11,11 @@ import {
    SafeAreaView,
    ImageBackground,
    Keyboard,
-   BackHandler
+   Text
 } from "react-native";
 import {
    NavigationBar,
    ListView,
-   Tile,
    Title,
    Subtitle,
    Divider,
@@ -168,7 +167,6 @@ class Stores extends Component {
    };
    render() {
       const { selectedStore, refreshing } = this.state;
-
       return (
          <View style={styles.navigation}>
             <StatusBar
@@ -189,6 +187,9 @@ class Stores extends Component {
                         onChangeText={this.handleSearch}
                         value={this.state.search}
                      />
+                  }
+                  centerComponent={
+                     <Subtitle style={{ paddingLeft: 50 }}>Total: {selectedStore.length} </Subtitle>
                   }
                   rightComponent={
                      <DropDownMenu
@@ -270,6 +271,7 @@ class Stores extends Component {
                   )}
                </ScrollView>
             </SafeAreaView>
+            
          </View>
       );
    }
@@ -279,9 +281,10 @@ export default Stores;
 
 const styles = StyleSheet.create({
    navigation: {
-      paddingTop: StatusBar.currentHeight,
+      marginTop: StatusBar.currentHeight,
       flex: 1,
-      paddingBottom: 65
+      paddingBottom: 66,
+      backgroundColor: "#f1f1f1"
    },
    row: {
       marginLeft: 20,
